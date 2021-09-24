@@ -1,6 +1,7 @@
 import * as anchor from '@project-serum/anchor';
 import * as token from '@solana/spl-token';
 import * as chai from 'chai';
+import { TextEncoder } from 'util';
 
 describe('tokadapt', () => {
   // Configure the client to use the local cluster.

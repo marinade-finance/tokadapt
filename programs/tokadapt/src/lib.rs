@@ -1,7 +1,7 @@
 use anchor_lang::{prelude::*, solana_program::system_program};
 use anchor_spl::token::{self, Mint, Token, TokenAccount};
 
-declare_id!("CWZ8fFJLqLPGgxKF7zzJcs4hVnUfZAPbVdMGaGtMHfaa");
+declare_id!("tokdh9ZbWPxkFzqsKqeAwLDk6J6a8NBZtQanVuuENxa");
 
 #[program]
 pub mod tokadapt {
@@ -103,16 +103,23 @@ pub struct Swap<'info> {
 }
 
 impl<'info> Swap<'info> {
-    pub fn process(&self, amount: u64) -> ProgramResult {
+    pub fn process(&self, mut amount: u64) -> ProgramResult {
         if self.input.mint != self.state.input_mint {
             msg!("Expected input mint {}", self.state.input_mint);
             return Err(ErrorCode::InvalidInputMint.into());
         }
 
-        if self.input.owner != self.input_authority.key()
-            && !self.input.delegate.contains(&self.input_authority.key())
-        {
-            return Err(ErrorCode::InvalidInputAuthority.into());
+        if self.input.owner == self.input_authority.key() {
+            if amount == u64::MAX {
+                amount = self.input.amount
+            }    
+        } else {
+            if !self.input.delegate.contains(&self.input_authority.key()) {
+                return Err(ErrorCode::InvalidInputAuthority.into());
+            }
+            if amount == u64::MAX {
+                amount = self.input.delegated_amount;
+            }
         }
 
         if amount > self.output_storage.amount {

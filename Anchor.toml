@@ -1,11 +1,13 @@
-[programs.localnet]
-tokadapt = "CWZ8fFJLqLPGgxKF7zzJcs4hVnUfZAPbVdMGaGtMHfaa"
+anchor_version = "0.16.1"
+
+[programs.devnet]
+tokadapt = "tokdh9ZbWPxkFzqsKqeAwLDk6J6a8NBZtQanVuuENxa"
 
 [registry]
 url = "https://anchor.projectserum.com"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "/home/aankor/.config/solana/id.json"
 
 [scripts]
