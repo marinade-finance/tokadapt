@@ -1,11 +1,12 @@
 {
   "dependencies": {
-    "@project-serum/anchor": "^0.16.1",
+    "@project-serum/anchor": "^0.16.2",
     "@solana/spl-token": "^0.1.8",
     "patch-package": "^6.4.7",
     "postinstall-postinstall": "^2.1.0"
   },
   "devDependencies": {
+    "@project-serum/anchor-cli": "^0.16.1",
     "@types/big.js": "^6.1.2",
     "@types/chai": "^4.2.21",
     "@types/expect": "^24.3.0",
