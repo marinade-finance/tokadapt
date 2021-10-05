@@ -19,6 +19,10 @@ pub mod tokadapt {
         ctx.accounts.process(amount)
     }
 
+    pub fn set_admin(ctx: Context<SetAdmin>, new_admin_authority: Pubkey) -> ProgramResult {
+        ctx.accounts.process(new_admin_authority)
+    }
+
     pub fn close(ctx: Context<Close>) -> ProgramResult {
         ctx.accounts.process()
     }
@@ -156,6 +160,20 @@ impl<'info> Swap<'info> {
             amount,
         )?;
 
+        Ok(())
+    }
+}
+
+#[derive(Accounts)]
+pub struct SetAdmin<'info> {
+    #[account(mut, has_one = admin_authority)]
+    pub state: Account<'info, State>,
+    pub admin_authority: Signer<'info>,
+}
+
+impl<'info> SetAdmin<'info> {
+    pub fn process(&mut self, new_admin_authority: Pubkey) -> ProgramResult {
+        self.state.admin_authority = new_admin_authority;
         Ok(())
     }
 }

@@ -1,4 +1,4 @@
-anchor_version = "0.16.1"
+anchor_version = "0.17.0"
 
 [programs.devnet]
 tokadapt = "tokdh9ZbWPxkFzqsKqeAwLDk6J6a8NBZtQanVuuENxa"
