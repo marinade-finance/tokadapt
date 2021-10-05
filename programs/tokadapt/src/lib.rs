@@ -91,7 +91,7 @@ pub struct Swap<'info> {
     #[account(mut)]
     pub input: Account<'info, TokenAccount>,
     pub input_authority: Signer<'info>,
-    #[account(mut)]
+    #[account()]
     pub input_mint: Account<'info, Mint>,
     #[account(mut)]
     pub output_storage: Account<'info, TokenAccount>,
@@ -113,10 +113,11 @@ impl<'info> Swap<'info> {
             return Err(ErrorCode::InvalidInputMint.into());
         }
 
+        // if amount == u64::MAX => max available / max delegated
         if self.input.owner == self.input_authority.key() {
             if amount == u64::MAX {
                 amount = self.input.amount
-            }    
+            }
         } else {
             if !self.input.delegate.contains(&self.input_authority.key()) {
                 return Err(ErrorCode::InvalidInputAuthority.into());
@@ -131,6 +132,7 @@ impl<'info> Swap<'info> {
             return Err(ProgramError::InsufficientFunds);
         }
 
+        // burn intermediate token
         token::burn(
             CpiContext::new(
                 self.token_program.to_account_info(),
@@ -143,6 +145,7 @@ impl<'info> Swap<'info> {
             amount,
         )?;
 
+        // transfer from storage to target
         token::transfer(
             CpiContext::new_with_signer(
                 self.token_program.to_account_info(),
