@@ -91,7 +91,7 @@ pub struct Swap<'info> {
     #[account(mut)]
     pub input: Account<'info, TokenAccount>,
     pub input_authority: Signer<'info>,
-    #[account()]
+    #[account(mut)]
     pub input_mint: Account<'info, Mint>,
     #[account(mut)]
     pub output_storage: Account<'info, TokenAccount>,
