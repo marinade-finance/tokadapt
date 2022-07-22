@@ -6,6 +6,6 @@
     "esModuleInterop": true
   },
   "include": [
-    "tests/**/*.ts"
+    "packages/**/*.ts"
   ]
 }

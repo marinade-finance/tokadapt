@@ -3,12 +3,12 @@ anchor_version = "0.17.0"
 [programs.mainnet]
 tokadapt = "tokdh9ZbWPxkFzqsKqeAwLDk6J6a8NBZtQanVuuENxa"
 
-[registry]
-url = "https://anchor.projectserum.com"
+[programs.localnet]
+tokadapt = "tokdh9ZbWPxkFzqsKqeAwLDk6J6a8NBZtQanVuuENxa"
 
 [provider]
-cluster = "mainnet"
+cluster = "localnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
-test = "npx ts-mocha -t 1000000 tests/*.ts"
+test = "pnpx jest --detectOpenHandles --coverage"
