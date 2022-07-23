@@ -10,7 +10,11 @@ This repo also requires amv - Anchor version manager
 https://book.anchor-lang.com/getting_started/installation.html
 
 
+Build
+------
+`pnpm build` 
+
 Test
 ------
-`anchor test` 
+`pnpm test` 
 
