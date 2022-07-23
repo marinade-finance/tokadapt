@@ -8,4 +8,8 @@
   "include": [
     "packages/**/*.ts"
   ]
+  ,
+  "exclude": [
+    "node_modules", "packages/sdk/__tests__","packages/sdk/test-helpers",
+  ]
 }
