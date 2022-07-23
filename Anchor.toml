@@ -11,4 +11,4 @@ cluster = "localnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
-test = "pnpx jest --detectOpenHandles --coverage"
+test = "pnpm _test"

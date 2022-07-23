@@ -273,12 +273,10 @@ export class TokadaptStateWrapper {
     }
 
     let adminAuthority: PublicKey;
-    const signers = [];
     if (admin instanceof PublicKey) {
       adminAuthority = admin;
     } else {
       adminAuthority = admin.publicKey;
-      signers.push(admin);
     }
 
     const tx = new TransactionEnvelope(this.provider, []);
@@ -318,6 +316,9 @@ export class TokadaptStateWrapper {
         })
         .instruction()
     );
+    if (!(admin instanceof PublicKey)) {
+      tx.addSigners(admin);
+    }
     return tx;
   }
 }

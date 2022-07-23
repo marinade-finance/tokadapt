@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "select-anchor-version": "avm use 0.17.0",
+    "select-anchor-version": "avm use 0.18.2",
     "anchor-build": "pnpm select-anchor-version && anchor build",
     "copy-generated": "copyfiles target/types/*.ts packages/sdk/generated",
-    "build": "pnpm anchor-build && pnpm copy-generated && tsc"
+    "build": "pnpm anchor-build && pnpm copy-generated && tsc",
+    "_test": "jest --detectOpenHandles --coverage",
+    "test": "pnpm select-anchor-version && BROWSER= anchor test"
   },
   "keywords": [],
   "author": "",
