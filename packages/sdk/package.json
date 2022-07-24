@@ -1,8 +1,7 @@
 {
   "name": "@marinade.finance/tokadapt-sdk",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Tokadapt quarry redeemer from marinade team: typescript SDK",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -1,5 +1,6 @@
 import { TransactionEnvelope } from '@saberhq/solana-contrib';
 import {
+  Keypair,
   ParsedAccountData,
   PublicKey,
   Signer,
@@ -8,8 +9,11 @@ import {
 import { TokadaptSDK, TokadaptStateData } from './sdk';
 import { encode } from '@project-serum/anchor/dist/cjs/utils/bytes/utf8';
 import {
+  ACCOUNT_SIZE,
   createAssociatedTokenAccountInstruction,
+  createInitializeAccountInstruction,
   getAssociatedTokenAddress,
+  getMinimumBalanceForRentExemptAccount,
   TOKEN_PROGRAM_ID,
 } from '@solana/spl-token';
 import BN from 'bn.js';
@@ -94,7 +98,7 @@ export class TokadaptStateWrapper {
     address: Signer;
     admin?: PublicKey;
     inputMint: PublicKey;
-    outputStorage?: PublicKey;
+    outputStorage?: PublicKey | Keypair;
     outputMint?: PublicKey;
     rentPayer?: Signer;
   }): Promise<{
@@ -145,16 +149,17 @@ export class TokadaptStateWrapper {
   }: {
     admin?: PublicKey;
     inputMint: PublicKey;
-    outputStorage?: PublicKey;
+    outputStorage?: PublicKey | Keypair;
     outputMint?: PublicKey;
     rentPayer?: Signer;
   }): Promise<TransactionEnvelope> {
     const tx = new TransactionEnvelope(this.provider, []);
+    const outputStorageAuthority = await this.outputStorageAuthority();
     if (!outputStorage) {
       if (!outputMint) {
         throw new Error('One of outputStorage or outputMint must be set');
       }
-      const outputStorageAuthority = await this.outputStorageAuthority();
+      // Save value to variable for future use
       outputStorage = await getAssociatedTokenAddress(
         outputMint,
         outputStorageAuthority,
@@ -171,6 +176,33 @@ export class TokadaptStateWrapper {
       if (rentPayer) {
         tx.addSigners(rentPayer);
       }
+    } else if (outputStorage instanceof Keypair) {
+      if (!outputMint) {
+        throw new Error('For creating outputStorage outputMint must be set');
+      }
+      tx.append(
+        SystemProgram.createAccount({
+          fromPubkey: rentPayer?.publicKey || this.provider.walletKey,
+          newAccountPubkey: outputStorage.publicKey,
+          lamports: await getMinimumBalanceForRentExemptAccount(
+            this.provider.connection
+          ),
+          space: ACCOUNT_SIZE,
+          programId: TOKEN_PROGRAM_ID,
+        })
+      );
+      tx.addSigners(outputStorage);
+      if (rentPayer) {
+        tx.addSigners(rentPayer);
+      }
+      tx.append(
+        createInitializeAccountInstruction(
+          outputStorage.publicKey,
+          outputMint,
+          outputStorageAuthority
+        )
+      );
+      outputStorage = outputStorage.publicKey; // convert to pubkey for future use
     }
     tx.append(
       await this.program.methods
@@ -256,6 +288,42 @@ export class TokadaptStateWrapper {
     return tx;
   }
 
+  async setAdmin({
+    admin,
+    newAdmin,
+  }: {
+    admin?: Signer | PublicKey;
+    newAdmin: PublicKey;
+  }) {
+    const data = await this.data();
+    if (!admin) {
+      admin = data.adminAuthority;
+    }
+
+    const signers = [];
+    let adminAuthority: PublicKey;
+    if (admin instanceof PublicKey) {
+      adminAuthority = admin;
+    } else {
+      adminAuthority = admin.publicKey;
+      signers.push(admin);
+    }
+
+    return new TransactionEnvelope(
+      this.provider,
+      [
+        await this.program.methods
+          .setAdmin(newAdmin)
+          .accounts({
+            state: this.address,
+            adminAuthority,
+          })
+          .instruction(),
+      ],
+      signers
+    );
+  }
+
   async close({
     admin,
     rentCollector,
@@ -311,7 +379,7 @@ export class TokadaptStateWrapper {
           outputStorage: data.outputStorage,
           outputStorageAuthority: await this.outputStorageAuthority(),
           tokenTarget: tokenCollector,
-          rentCollector: rentCollector,
+          rentCollector: rentCollector || this.provider.walletKey,
           tokenProgram: TOKEN_PROGRAM_ID,
         })
         .instruction()

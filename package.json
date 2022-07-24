@@ -9,7 +9,8 @@
     "copy-generated": "copyfiles target/types/*.ts packages/sdk/generated",
     "build": "pnpm anchor-build && pnpm copy-generated && tsc",
     "_test": "jest --detectOpenHandles --coverage",
-    "test": "pnpm select-anchor-version && BROWSER= anchor test"
+    "test": "pnpm select-anchor-version && BROWSER= anchor test",
+    "cli": "ts-node ./packages/cli/index.ts"
   },
   "keywords": [],
   "author": "",
