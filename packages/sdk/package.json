@@ -10,8 +10,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^7.18.9",
-    "@babel/preset-typescript": "^7.18.6",
     "@saberhq/solana-contrib": "^1.13.32",
     "@solana/spl-token": "^0.2.0",
     "@solana/web3.js": "^1.48.0",
