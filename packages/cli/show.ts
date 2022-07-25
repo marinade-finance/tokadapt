@@ -1,6 +1,6 @@
 import { TokadaptSDK } from '@marinade.finance/tokadapt-sdk';
 import { TokadaptStateWrapper } from '@marinade.finance/tokadapt-sdk/state';
-import { PublicKey } from '@solana/web3.js';
+import { ParsedAccountData, PublicKey } from '@solana/web3.js';
 import { Command } from 'commander';
 import { useContext } from './context';
 import { parsePubkey } from './keyParser';
@@ -37,10 +37,14 @@ export async function show({
   console.log(`Tokadapt ${stateWrapper.address.toBase58()}`);
   console.log(`  admin: ${stateData.adminAuthority.toBase58()}`);
   console.log(`  input mint: ${stateData.inputMint.toBase58()}`);
+  const storage = (
+    (
+      await tokadapt.provider.connection.getParsedAccountInfo(
+        stateData.outputStorage
+      )
+    ).value?.data as ParsedAccountData
+  ).parsed.info;
+  console.log(`  output mint: ${storage.mint}`);
   console.log(`  output storage: ${stateData.outputStorage.toBase58()}`);
-  const storageBalance =
-    await tokadapt.provider.connection.getTokenAccountBalance(
-      stateData.outputStorage
-    );
-  console.log(`  storage balance ${storageBalance.value.uiAmount}`);
+  console.log(`  output storage balance: ${storage.tokenAmount.uiAmount}`);
 }

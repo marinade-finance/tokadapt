@@ -9,7 +9,7 @@ import { parseKeypair, parsePubkey } from './keyParser';
 
 export function installSetAdmin(program: Command) {
   program
-    .command('close')
+    .command('set-admin')
     .requiredOption(
       '--tokadapt <keypair>',
       'Tokapapt state address',
