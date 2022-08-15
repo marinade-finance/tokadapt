@@ -1,17 +1,17 @@
-import { GokiSDK, SmartWalletWrapper } from '@gokiprotocol/client';
+import { GokiSDK } from '@gokiprotocol/client';
 import { TokadaptSDK } from '@marinade.finance/tokadapt-sdk';
 import { TokadaptStateWrapper } from '@marinade.finance/tokadapt-sdk/state';
-import { TransactionEnvelope } from '@saberhq/solana-contrib';
 import { Keypair, PublicKey } from '@solana/web3.js';
 import { Command } from 'commander';
 import { useContext } from './context';
 import { parseKeypair, parsePubkey } from './keyParser';
+import { GokiMiddleware, Middleware } from './middleware';
 
 export function installClose(program: Command) {
   program
     .command('close')
     .requiredOption(
-      '--tokadapt <keypair>',
+      '--tokadapt <address>',
       'Tokapapt state address',
       parsePubkey,
       Promise.resolve(
@@ -49,6 +49,7 @@ export function installClose(program: Command) {
           tokenCollector: await tokenCollector,
           rentPayer: await rentPayer,
           proposer: await proposer,
+          simulate: context.simulate,
         });
       }
     );
@@ -75,50 +76,35 @@ export async function close({
   proposer?: Keypair;
   simulate?: boolean;
 }) {
-  let tx: TransactionEnvelope;
   const stateWrapper = new TokadaptStateWrapper(tokadapt, state);
   const stateData = await stateWrapper.data();
-  let smartWalletWrapper: SmartWalletWrapper | undefined;
+  const middleware: Middleware[] = [];
   if (!admin) {
     try {
-      smartWalletWrapper = await goki.loadSmartWallet(stateData.adminAuthority);
-      console.log('Using GOKI smart wallet');
+      middleware.push(
+        await GokiMiddleware.create({
+          sdk: goki,
+          account: stateData.adminAuthority,
+          proposer: proposer,
+          rentPayer: rentPayer,
+        })
+      );
     } catch {
       /**/
     }
   }
-  const closeTx = await stateWrapper.close({
+  let tx = await stateWrapper.close({
     admin,
     rentCollector,
     tokenCollector,
     rentPayer,
   });
-  if (smartWalletWrapper) {
-    const {
-      tx: newTransactionTx,
-      transactionKey,
-      index,
-    } = await smartWalletWrapper.newTransaction({
-      // Only the last instruction
-      instructions: [closeTx.instructions[closeTx.instructions.length - 1]],
-      proposer: proposer?.publicKey,
-      payer: rentPayer?.publicKey,
-    });
-    console.log(`Creating GOKI tx #${index}) ${transactionKey.toBase58()}`);
-    closeTx.instructions.pop(); // Rest instructions will run now
-    tx = closeTx.combine(newTransactionTx);
-    if (proposer) {
-      tx.addSigners(proposer);
-    }
-  } else {
-    tx = closeTx;
-    if (admin) {
-      tx.addSigners(admin);
-    }
-  }
 
-  if (rentPayer) {
-    tx.addSigners(rentPayer);
+  for (const m of middleware) {
+    tx = await m.apply(tx);
+  }
+  if (admin) {
+    tx.addSigners(admin);
   }
 
   if (simulate) {

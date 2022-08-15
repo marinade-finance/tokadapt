@@ -6,6 +6,7 @@ import { Keypair, PublicKey } from '@solana/web3.js';
 import { Command } from 'commander';
 import { useContext } from './context';
 import { parseKeypair, parsePubkey } from './keyParser';
+import { GokiMiddleware, Middleware } from './middleware';
 
 export function installSetAdmin(program: Command) {
   program
@@ -45,6 +46,7 @@ export function installSetAdmin(program: Command) {
           newAdmin: await newAdmin,
           rentPayer: await rentPayer,
           proposer: await proposer,
+          simulate: context.simulate,
         });
       }
     );
@@ -69,45 +71,33 @@ export async function setAdmin({
   proposer?: Keypair;
   simulate?: boolean;
 }) {
-  let tx: TransactionEnvelope;
   const stateWrapper = new TokadaptStateWrapper(tokadapt, state);
   const stateData = await stateWrapper.data();
-  let smartWalletWrapper: SmartWalletWrapper | undefined;
+  const middleware: Middleware[] = [];
   if (!admin) {
     try {
-      smartWalletWrapper = await goki.loadSmartWallet(stateData.adminAuthority);
-      console.log('Using GOKI smart wallet');
+      middleware.push(
+        await GokiMiddleware.create({
+          sdk: goki,
+          account: stateData.adminAuthority,
+          proposer: proposer,
+          rentPayer: rentPayer,
+        })
+      );
     } catch {
       /**/
     }
   }
-  const setAdminTx = await stateWrapper.setAdmin({
+  let tx = await stateWrapper.setAdmin({
     admin,
     newAdmin,
   });
-  if (smartWalletWrapper) {
-    const {
-      tx: newTransactionTx,
-      transactionKey,
-      index,
-    } = await smartWalletWrapper.newTransactionFromEnvelope({
-      tx: setAdminTx,
-      proposer: proposer?.publicKey,
-      payer: rentPayer?.publicKey,
-    });
-    console.log(`Creating GOKI tx #${index}) ${transactionKey.toBase58()}`);
-    tx = newTransactionTx;
-    if (proposer) {
-      tx.addSigners(proposer);
-    }
-    if (rentPayer) {
-      tx.addSigners(rentPayer);
-    }
-  } else {
-    tx = setAdminTx;
-    if (admin) {
-      tx.addSigners(admin);
-    }
+  for (const m of middleware) {
+    tx = await m.apply(tx);
+  }
+
+  if (admin) {
+    tx.addSigners(admin);
   }
 
   if (simulate) {

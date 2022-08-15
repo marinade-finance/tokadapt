@@ -55,6 +55,7 @@ export function installSwap(program: Command) {
           outputAuthority: await outputAuthority,
           output: await output,
           rentPayer: await rentPayer,
+          simulate: context.simulate,
         });
       }
     );
