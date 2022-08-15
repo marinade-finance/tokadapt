@@ -29,7 +29,7 @@ export const setContext = ({
   simulate: boolean;
 }) => {
   const provider = SolanaProvider.init({
-    connection: new Connection(cluster),
+    connection: new Connection(cluster, 'confirmed'),
     wallet: new SignerWallet(walletKP),
   });
   context.tokadapt = new TokadaptSDK({

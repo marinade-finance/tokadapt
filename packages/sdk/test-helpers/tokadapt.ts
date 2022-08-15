@@ -45,7 +45,7 @@ export class TokadaptHelper {
       inputMint: inputMint.address,
       outputMint: outputMint.address,
     });
-    console.log('Creating tokadapt');
+
     await tx.confirm();
     await wrapper.reload();
 
