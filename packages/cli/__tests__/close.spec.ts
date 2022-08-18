@@ -1,12 +1,11 @@
-import { MintHelper } from '@marinade.finance/tokadapt-sdk/test-helpers/mint';
 import { SolanaProvider } from '@saberhq/solana-contrib';
-import { AnchorProvider } from '@project-serum/anchor';
+import { AnchorProvider, BN } from '@project-serum/anchor';
 import { TokadaptSDK } from '@marinade.finance/tokadapt-sdk';
 import shellMatchers from 'jest-shell-matchers';
 import { file } from 'tmp-promise';
 import { Keypair } from '@solana/web3.js';
 import { fs } from 'mz';
-import { TokadaptStateWrapper } from '@marinade.finance/tokadapt-sdk/state';
+import { TokadaptHelper } from '@marinade.finance/tokadapt-sdk/test-helpers/tokadapt';
 
 jest.setTimeout(300000);
 
@@ -16,7 +15,7 @@ beforeAll(() => {
   shellMatchers();
 });
 
-describe('Create tokadapt', () => {
+describe('Close tokadapt',  () => {
   const anchorProvider = AnchorProvider.env();
   const sdk = new TokadaptSDK({
     provider: SolanaProvider.init({
@@ -26,50 +25,39 @@ describe('Create tokadapt', () => {
     }),
   });
 
-  it('is creating with default parameters', async () => {
+  it('it closes', async () => {
     const tokadaptState = new Keypair();
+    
     const { path: tokadaptStatePath, cleanup } = await file();
     await fs.writeFile(
       tokadaptStatePath,
       JSON.stringify(Array.from(tokadaptState.secretKey))
     );
-    const inputMint = await MintHelper.create({
-      provider: sdk.provider,
+
+    await TokadaptHelper.create({
+      sdk, address:tokadaptState
     });
-    const outputMint = await MintHelper.create({
-      provider: sdk.provider,
-    });
-    
+
     await expect([
       'pnpm',
       [
         'cli',
-        'create',
+        'close',
         '--tokadapt',
         tokadaptStatePath,
-        '--input-mint',
-        inputMint.address,
-        '--output-mint',
-        outputMint.address,
       ],
     ]).toHaveMatchingSpawnOutput({
       code: 0,
       stderr: '',
+     // todo regex for 'Tx:' ?
+     // stdout: ''
     });
 
-    const tokadaptStateWrapper = new TokadaptStateWrapper(
-      sdk,
-      tokadaptState.publicKey
-    );
-    await expect(tokadaptStateWrapper.data()).resolves.toBeTruthy();
-    const tokadapStateData = await tokadaptStateWrapper.data();
-    expect(tokadapStateData.inputMint.toBase58()).toBe(
-      inputMint.address.toBase58()
-    );
-    expect(tokadapStateData.adminAuthority.toBase58()).toBe(
-      sdk.provider.walletKey.toBase58()
-    );
-
+   
     await cleanup();
   });
+
+  // todo test other args
+  
 });
+
