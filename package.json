@@ -10,7 +10,14 @@
     "build": "pnpm anchor-build && pnpm copy-generated && tsc",
     "_test": "jest --detectOpenHandles --coverage",
     "test": "pnpm select-anchor-version && BROWSER= anchor test",
-    "cli": "ts-node ./packages/cli/index.ts"
+    "cli": "ts-node ./packages/cli/index.ts",
+    "lint": "gts lint",
+    "clean": "gts clean",
+    "compile": "tsc",
+    "fix": "gts fix",
+    "prepare": "npm run compile",
+    "pretest": "npm run compile",
+    "posttest": "npm run lint"
   },
   "keywords": [],
   "author": "",
@@ -21,11 +28,14 @@
     "gts": "^3.1.0",
     "jest": "^28.1.3",
     "ts-jest": "^28.0.7",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "@types/node": "^14.11.2"
   },
   "pnpm": {
     "peerDependencyRules": {
-      "ignoreMissing": ["react-native"]
+      "ignoreMissing": [
+        "react-native"
+      ]
     }
   }
 }

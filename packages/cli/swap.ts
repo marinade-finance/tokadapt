@@ -2,7 +2,7 @@ import { TokadaptSDK } from '@marinade.finance/tokadapt-sdk';
 import { TokadaptStateWrapper } from '@marinade.finance/tokadapt-sdk/state';
 import { Keypair, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { Command } from 'commander';
-import { parseKeypair, parsePubkey } from './keyParser';
+import { parseKeypair, parsePubkey } from '@marinade.finance/solana-cli-utils';
 import BN from 'bn.js';
 import { useContext } from './context';
 

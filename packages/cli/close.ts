@@ -4,8 +4,11 @@ import { TokadaptStateWrapper } from '@marinade.finance/tokadapt-sdk/state';
 import { Keypair, PublicKey } from '@solana/web3.js';
 import { Command } from 'commander';
 import { useContext } from './context';
-import { parseKeypair, parsePubkey } from './keyParser';
-import { GokiMiddleware, installMiddleware, Middleware } from './middleware';
+import {
+  parseKeypair,
+  parsePubkey,
+  middleware as m,
+} from '@marinade.finance/solana-cli-utils';
 
 export function installClose(program: Command) {
   program
@@ -78,10 +81,9 @@ export async function close({
 }) {
   const stateWrapper = new TokadaptStateWrapper(tokadapt, state);
   const stateData = await stateWrapper.data();
-  const middleware: Middleware[] = [];
-  await installMiddleware({
+  const middleware: m.Middleware[] = [];
+  await m.installMultisigMiddleware({
     middleware,
-    tokadapt,
     goki,
     address: stateData.adminAuthority,
     proposer,
