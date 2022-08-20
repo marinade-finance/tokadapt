@@ -5,7 +5,7 @@ import { Keypair, PublicKey } from '@solana/web3.js';
 import { Command } from 'commander';
 import { useContext } from './context';
 import { parseKeypair, parsePubkey } from './keyParser';
-import { GokiMiddleware, Middleware } from './middleware';
+import { GokiMiddleware, installMiddleware, Middleware } from './middleware';
 
 export function installClose(program: Command) {
   program
@@ -79,20 +79,14 @@ export async function close({
   const stateWrapper = new TokadaptStateWrapper(tokadapt, state);
   const stateData = await stateWrapper.data();
   const middleware: Middleware[] = [];
-  if (!admin) {
-    try {
-      middleware.push(
-        await GokiMiddleware.create({
-          sdk: goki,
-          account: stateData.adminAuthority,
-          proposer: proposer,
-          rentPayer: rentPayer,
-        })
-      );
-    } catch {
-      /**/
-    }
-  }
+  await installMiddleware({
+    middleware,
+    tokadapt,
+    goki,
+    address: stateData.adminAuthority,
+    proposer,
+    rentPayer,
+  });
   let tx = await stateWrapper.close({
     admin,
     rentCollector,

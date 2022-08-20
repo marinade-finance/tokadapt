@@ -14,6 +14,7 @@
     "@marinade.finance/tokadapt-sdk": "workspace:^1.0.0",
     "@saberhq/anchor-contrib": "^1.13.32",
     "@saberhq/token-utils": "^1.13.32",
+    "@solana/spl-governance": "^0.3.1",
     "@solana/web3.js": "^1.48.0",
     "bn.js": "^5.2.1",
     "commander": "^9.4.0",

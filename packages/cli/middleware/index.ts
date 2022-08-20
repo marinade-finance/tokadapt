@@ -1,5 +1,9 @@
+import { GokiSDK } from '@gokiprotocol/client';
+import { TokadaptSDK } from '@marinade.finance/tokadapt-sdk';
 import { TransactionEnvelope } from '@saberhq/solana-contrib';
-import { Connection, PublicKey, SystemProgram } from '@solana/web3.js';
+import { Keypair, PublicKey } from '@solana/web3.js';
+import { GokiMiddleware } from './GokiMiddleware';
+import { SplGovDataMiddleware } from './SplGovDataMiddleware';
 
 export { GokiMiddleware } from './GokiMiddleware';
 
@@ -9,30 +13,38 @@ export interface Middleware {
   apply(tx: TransactionEnvelope): Promise<TransactionEnvelope>;
 }
 
-/*
-export async function applyMiddleware({
+export async function installMiddleware({
   middleware,
-  connection,
-  tx,
+  tokadapt,
+  goki,
+  address,
+  proposer,
+  rentPayer,
 }: {
   middleware: Middleware[];
-  connection: Connection;
-  tx: TransactionEnvelope;
-}): Promise<TransactionEnvelope> {
-  const accountInfo = await connection.getAccountInfo(account);
-  if (!accountInfo || accountInfo.owner.equals(SystemProgram.programId)) {
-    return tx;
-  }
-
-  for (const m of middleware) {
-    if (m.programId.equals(accountInfo.owner)) {
-      return await m.apply({
-        tx,
-        account,
-      });
+  tokadapt: TokadaptSDK;
+  goki: GokiSDK;
+  address: PublicKey;
+  proposer?: Keypair;
+  rentPayer?: Keypair;
+}) {
+  const account = await tokadapt.provider.getAccountInfo(address);
+  if (account) {
+    if (account.accountInfo.owner.equals(goki.programs.SmartWallet.programId)) {
+      middleware.push(
+        await GokiMiddleware.create({
+          sdk: goki,
+          account: address,
+          proposer,
+          rentPayer,
+        })
+      );
+    } else if (account.accountInfo.owner.equals(SplGovDataMiddleware.PROG_ID)) {
+      middleware.push(
+        await SplGovDataMiddleware.create({
+          account: address,
+        })
+      );
     }
   }
-
-  return tx;
 }
-*/
