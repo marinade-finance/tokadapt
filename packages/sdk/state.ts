@@ -344,6 +344,7 @@ export class TokadaptStateWrapper {
     admin,
     rentCollector,
     tokenCollector,
+    createTokenCollector,
     outputStorage,
     outputMint,
     rentPayer,
@@ -351,6 +352,7 @@ export class TokadaptStateWrapper {
     admin?: Signer | PublicKey;
     rentCollector?: PublicKey;
     tokenCollector?: PublicKey;
+    createTokenCollector?: boolean;
     outputStorage?: PublicKey;
     outputMint?: PublicKey;
     rentPayer?: Signer;
@@ -359,39 +361,53 @@ export class TokadaptStateWrapper {
       admin = (await this.data()).adminAuthority;
     }
 
+    const signers = [];
     let adminAuthority: PublicKey;
     if (admin instanceof PublicKey) {
       adminAuthority = admin;
     } else {
       adminAuthority = admin.publicKey;
+      signers.push(admin);
     }
 
     if (!outputStorage) {
       outputStorage = (await this.data()).outputStorage;
     }
 
-    const tx = new TransactionEnvelope(this.provider, []);
+    const tx = new TransactionEnvelope(this.provider, [], signers);
     if (!tokenCollector) {
       if (!outputMint) {
         outputMint = await this.outputMint();
       }
+
       tokenCollector = await getAssociatedTokenAddress(
         outputMint,
         rentCollector || this.provider.walletKey,
         true
       );
-      if (!(await this.provider.getAccountInfo(tokenCollector))) {
-        tx.append(
-          createAssociatedTokenAccountInstruction(
-            rentPayer?.publicKey || this.provider.walletKey,
-            tokenCollector,
-            rentCollector || this.provider.walletKey,
-            outputMint
-          )
-        );
-        if (rentPayer) {
-          tx.addSigners(rentPayer);
-        }
+    }
+
+    if (createTokenCollector === undefined) {
+      createTokenCollector = !(await this.provider.getAccountInfo(
+        tokenCollector
+      ));
+    }
+
+    if (createTokenCollector) {
+      if (!outputMint) {
+        outputMint = await this.outputMint();
+      }
+
+      tx.append(
+        createAssociatedTokenAccountInstruction(
+          rentPayer?.publicKey || this.provider.walletKey,
+          tokenCollector,
+          rentCollector || this.provider.walletKey,
+          outputMint
+        )
+      );
+      if (rentPayer) {
+        tx.addSigners(rentPayer);
       }
     }
 
@@ -409,9 +425,7 @@ export class TokadaptStateWrapper {
         })
         .instruction()
     );
-    if (!(admin instanceof PublicKey)) {
-      tx.addSigners(admin);
-    }
+
     return tx;
   }
 }

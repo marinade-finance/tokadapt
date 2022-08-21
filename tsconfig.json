@@ -8,5 +8,8 @@
   },
   "include": [
     "packages/**/*.ts"
+  ],
+  "exclude": [
+    "packages/*/__tests__"
   ]
 }
