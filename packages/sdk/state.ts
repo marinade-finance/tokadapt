@@ -317,12 +317,9 @@ export class TokadaptStateWrapper {
     }
 
     const signers = [];
-    let adminAuthority: PublicKey;
-    if (admin instanceof PublicKey) {
-      adminAuthority = admin;
-    } else {
-      adminAuthority = admin.publicKey;
+    if (!(admin instanceof PublicKey)) {
       signers.push(admin);
+      admin = admin.publicKey;
     }
 
     return new TransactionEnvelope(
@@ -332,7 +329,7 @@ export class TokadaptStateWrapper {
           .setAdmin(newAdmin)
           .accounts({
             state: this.address,
-            adminAuthority,
+            adminAuthority: admin,
           })
           .instruction(),
       ],
@@ -362,12 +359,9 @@ export class TokadaptStateWrapper {
     }
 
     const signers = [];
-    let adminAuthority: PublicKey;
-    if (admin instanceof PublicKey) {
-      adminAuthority = admin;
-    } else {
-      adminAuthority = admin.publicKey;
+    if (!(admin instanceof PublicKey)) {
       signers.push(admin);
+      admin = admin.publicKey;
     }
 
     if (!outputStorage) {
@@ -416,7 +410,7 @@ export class TokadaptStateWrapper {
         .close()
         .accounts({
           state: this.address,
-          adminAuthority,
+          adminAuthority: admin,
           outputStorage,
           outputStorageAuthority: await this.outputStorageAuthority(),
           tokenTarget: tokenCollector,
