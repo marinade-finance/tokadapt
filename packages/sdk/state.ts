@@ -57,6 +57,10 @@ export class TokadaptStateWrapper {
     return this._data;
   }
 
+  setData(data: TokadaptStateData) {
+    this._data = data;
+  }
+
   async outputMint(): Promise<PublicKey> {
     if (!this._outputMint) {
       const data = await this.data();
@@ -70,6 +74,10 @@ export class TokadaptStateWrapper {
       this._outputMint = new PublicKey(storage.info.mint);
     }
     return this._outputMint!;
+  }
+
+  setOutputMint(outputMint: PublicKey) {
+    this._outputMint = outputMint;
   }
 
   async outputStorageAuthorityWithBump() {
@@ -222,6 +230,9 @@ export class TokadaptStateWrapper {
     input,
     outputAuthority = this.provider.walletKey,
     output,
+    inputMint,
+    outputStorage,
+    outputMint,
     rentPayer,
   }: {
     amount?: BN;
@@ -229,18 +240,24 @@ export class TokadaptStateWrapper {
     input?: PublicKey;
     outputAuthority?: PublicKey;
     output?: PublicKey;
+    inputMint?: PublicKey;
+    outputStorage?: PublicKey;
+    outputMint?: PublicKey;
     rentPayer?: Signer;
   }) {
     const tx = new TransactionEnvelope(this.provider, []);
     const inputAuthority = inputSigner?.publicKey || this.provider.walletKey;
-    const data = await this.data();
-    const outputMint = await this.outputMint();
+    if (!outputMint) {
+      outputMint = await this.outputMint();
+    }
+    if (!inputMint) {
+      inputMint = (await this.data()).inputMint;
+    }
     if (!input) {
-      input = await getAssociatedTokenAddress(
-        data.inputMint,
-        inputAuthority,
-        true
-      );
+      input = await getAssociatedTokenAddress(inputMint, inputAuthority, true);
+    }
+    if (!outputStorage) {
+      outputStorage = (await this.data()).outputStorage;
     }
 
     if (!output) {
@@ -274,8 +291,8 @@ export class TokadaptStateWrapper {
           state: this.address,
           input,
           inputAuthority,
-          inputMint: data.inputMint,
-          outputStorage: data.outputStorage,
+          inputMint,
+          outputStorage,
           outputStorageAuthority: await this.outputStorageAuthority(),
           target: output,
           tokenProgram: TOKEN_PROGRAM_ID,
@@ -295,18 +312,14 @@ export class TokadaptStateWrapper {
     admin?: Signer | PublicKey;
     newAdmin: PublicKey;
   }) {
-    const data = await this.data();
     if (!admin) {
-      admin = data.adminAuthority;
+      admin = (await this.data()).adminAuthority;
     }
 
     const signers = [];
-    let adminAuthority: PublicKey;
-    if (admin instanceof PublicKey) {
-      adminAuthority = admin;
-    } else {
-      adminAuthority = admin.publicKey;
+    if (!(admin instanceof PublicKey)) {
       signers.push(admin);
+      admin = admin.publicKey;
     }
 
     return new TransactionEnvelope(
@@ -316,7 +329,7 @@ export class TokadaptStateWrapper {
           .setAdmin(newAdmin)
           .accounts({
             state: this.address,
-            adminAuthority,
+            adminAuthority: admin,
           })
           .instruction(),
       ],
@@ -328,45 +341,67 @@ export class TokadaptStateWrapper {
     admin,
     rentCollector,
     tokenCollector,
+    createTokenCollector,
+    outputStorage,
+    outputMint,
     rentPayer,
   }: {
     admin?: Signer | PublicKey;
     rentCollector?: PublicKey;
     tokenCollector?: PublicKey;
+    createTokenCollector?: boolean;
+    outputStorage?: PublicKey;
+    outputMint?: PublicKey;
     rentPayer?: Signer;
   }) {
-    const data = await this.data();
     if (!admin) {
-      admin = data.adminAuthority;
+      admin = (await this.data()).adminAuthority;
     }
 
-    let adminAuthority: PublicKey;
-    if (admin instanceof PublicKey) {
-      adminAuthority = admin;
-    } else {
-      adminAuthority = admin.publicKey;
+    const signers = [];
+    if (!(admin instanceof PublicKey)) {
+      signers.push(admin);
+      admin = admin.publicKey;
     }
 
-    const tx = new TransactionEnvelope(this.provider, []);
+    if (!outputStorage) {
+      outputStorage = (await this.data()).outputStorage;
+    }
+
+    const tx = new TransactionEnvelope(this.provider, [], signers);
     if (!tokenCollector) {
-      const outputMint = await this.outputMint();
+      if (!outputMint) {
+        outputMint = await this.outputMint();
+      }
+
       tokenCollector = await getAssociatedTokenAddress(
         outputMint,
         rentCollector || this.provider.walletKey,
         true
       );
-      if (!(await this.provider.getAccountInfo(tokenCollector))) {
-        tx.append(
-          createAssociatedTokenAccountInstruction(
-            rentPayer?.publicKey || this.provider.walletKey,
-            tokenCollector,
-            rentCollector || this.provider.walletKey,
-            outputMint
-          )
-        );
-        if (rentPayer) {
-          tx.addSigners(rentPayer);
-        }
+    }
+
+    if (createTokenCollector === undefined) {
+      createTokenCollector = !(await this.provider.getAccountInfo(
+        tokenCollector
+      ));
+    }
+
+    if (createTokenCollector) {
+      if (!outputMint) {
+        outputMint = await this.outputMint();
+      }
+
+      tx.append(
+        createAssociatedTokenAccountInstruction(
+          rentPayer?.publicKey || this.provider.walletKey,
+          tokenCollector,
+          rentCollector || this.provider.walletKey,
+          outputMint
+        )
+      );
+      if (rentPayer) {
+        tx.addSigners(rentPayer);
       }
     }
 
@@ -375,8 +410,8 @@ export class TokadaptStateWrapper {
         .close()
         .accounts({
           state: this.address,
-          adminAuthority,
-          outputStorage: data.outputStorage,
+          adminAuthority: admin,
+          outputStorage,
           outputStorageAuthority: await this.outputStorageAuthority(),
           tokenTarget: tokenCollector,
           rentCollector: rentCollector || this.provider.walletKey,
@@ -384,9 +419,7 @@ export class TokadaptStateWrapper {
         })
         .instruction()
     );
-    if (!(admin instanceof PublicKey)) {
-      tx.addSigners(admin);
-    }
+
     return tx;
   }
 }

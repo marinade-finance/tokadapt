@@ -1,12 +1,14 @@
-import { GokiSDK, SmartWalletWrapper } from '@gokiprotocol/client';
+import { GokiSDK } from '@gokiprotocol/client';
 import { TokadaptSDK } from '@marinade.finance/tokadapt-sdk';
 import { TokadaptStateWrapper } from '@marinade.finance/tokadapt-sdk/state';
-import { TransactionEnvelope } from '@saberhq/solana-contrib';
 import { Keypair, PublicKey } from '@solana/web3.js';
 import { Command } from 'commander';
 import { useContext } from './context';
-import { parseKeypair, parsePubkey } from './keyParser';
-import { GokiMiddleware, Middleware } from './middleware';
+import {
+  parseKeypair,
+  parsePubkey,
+  middleware as m,
+} from '@marinade.finance/solana-cli-utils';
 
 export function installSetAdmin(program: Command) {
   program
@@ -73,21 +75,19 @@ export async function setAdmin({
 }) {
   const stateWrapper = new TokadaptStateWrapper(tokadapt, state);
   const stateData = await stateWrapper.data();
-  const middleware: Middleware[] = [];
-  if (!admin) {
-    try {
-      middleware.push(
-        await GokiMiddleware.create({
-          sdk: goki,
-          account: stateData.adminAuthority,
-          proposer: proposer,
-          rentPayer: rentPayer,
-        })
-      );
-    } catch {
-      /**/
-    }
+  const middleware: m.Middleware[] = [];
+  if (admin && !stateData.adminAuthority.equals(admin.publicKey)) {
+    throw new Error(`Expeced admin ${stateData.adminAuthority.toBase58()}`);
   }
+
+  await m.installMultisigMiddleware({
+    middleware,
+    goki,
+    address: stateData.adminAuthority,
+    proposer,
+    rentPayer,
+  });
+
   let tx = await stateWrapper.setAdmin({
     admin,
     newAdmin,

@@ -3,9 +3,13 @@
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "build",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "moduleResolution": "Node"
   },
   "include": [
     "packages/**/*.ts"
+  ],
+  "exclude": [
+    "packages/*/__tests__"
   ]
 }

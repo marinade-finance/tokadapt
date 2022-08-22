@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { parseKeypair } from './keyParser';
+import { parseKeypair } from '@marinade.finance/solana-cli-utils';
 import { Keypair } from '@solana/web3.js';
 import { setContext } from './context';
 import { installShow } from './show';
