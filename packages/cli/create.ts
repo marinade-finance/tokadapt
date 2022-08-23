@@ -3,7 +3,11 @@ import { TokadaptStateWrapper } from '@marinade.finance/tokadapt-sdk/state';
 import { Keypair, PublicKey } from '@solana/web3.js';
 import { Command } from 'commander';
 import { useContext } from './context';
-import { parseKeypair, parsePubkey, parsePubkeyOrKeypair } from '@marinade.finance/solana-cli-utils';
+import {
+  parseKeypair,
+  parsePubkey,
+  parsePubkeyOrKeypair,
+} from '@marinade.finance/solana-cli-utils';
 
 export function installCreate(program: Command) {
   program

@@ -26,6 +26,7 @@ export function installClose(program: Command) {
     .option('--token-collector <pubkey>', 'Token collector', parsePubkey)
     .option('--rent-payer <keypair>', 'Rent payer', parseKeypair)
     .option('--proposer <keypair>', 'Proposer', parseKeypair)
+    .option('--log-only', 'Do not create multisig transaction')
     .action(
       async ({
         tokadapt,
@@ -34,6 +35,7 @@ export function installClose(program: Command) {
         tokenCollector,
         rentPayer,
         proposer,
+        logOnly,
       }: {
         tokadapt: Promise<PublicKey>;
         admin?: Promise<Keypair>;
@@ -41,6 +43,7 @@ export function installClose(program: Command) {
         tokenCollector?: Promise<PublicKey>;
         rentPayer?: Promise<Keypair>;
         proposer?: Promise<Keypair>;
+        logOnly?: boolean;
       }) => {
         const context = useContext();
         await close({
@@ -52,6 +55,7 @@ export function installClose(program: Command) {
           tokenCollector: await tokenCollector,
           rentPayer: await rentPayer,
           proposer: await proposer,
+          logOnly,
           simulate: context.simulate,
         });
       }
@@ -67,6 +71,7 @@ export async function close({
   tokenCollector,
   rentPayer,
   proposer,
+  logOnly,
   simulate,
 }: {
   tokadapt: TokadaptSDK;
@@ -77,6 +82,7 @@ export async function close({
   tokenCollector?: PublicKey;
   rentPayer?: Keypair;
   proposer?: Keypair;
+  logOnly?: boolean;
   simulate?: boolean;
 }) {
   const stateWrapper = new TokadaptStateWrapper(tokadapt, state);
@@ -88,6 +94,7 @@ export async function close({
     address: stateData.adminAuthority,
     proposer,
     rentPayer,
+    logOnly,
   });
   let tx = await stateWrapper.close({
     admin,
@@ -101,6 +108,10 @@ export async function close({
   }
   if (admin) {
     tx.addSigners(admin);
+  }
+
+  if (tx.instructions.length === 0) {
+    return;
   }
 
   if (simulate) {
