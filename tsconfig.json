@@ -7,9 +7,6 @@
     "moduleResolution": "Node"
   },
   "include": [
-    "packages/**/*.ts"
-  ],
-  "exclude": [
-    "packages/*/__tests__"
+    "packages/**/*"
   ]
 }

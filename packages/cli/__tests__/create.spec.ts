@@ -1,12 +1,7 @@
 import { MintHelper } from '@marinade.finance/tokadapt-sdk/test-helpers/mint';
-import { SolanaProvider } from '@saberhq/solana-contrib';
-import { AnchorProvider } from '@project-serum/anchor';
-import { TokadaptSDK } from '@marinade.finance/tokadapt-sdk';
-import shellMatchers from 'jest-shell-matchers';
-import { file } from 'tmp-promise';
-import { Keypair } from '@solana/web3.js';
-import { fs } from 'mz';
 import { TokadaptStateWrapper } from '@marinade.finance/tokadapt-sdk/state';
+
+import { initSDK, shellMatchers, createFileKeypair } from '../test-helpers';
 
 jest.setTimeout(300000);
 
@@ -17,29 +12,21 @@ beforeAll(() => {
 });
 
 describe('Create tokadapt', () => {
-  const anchorProvider = AnchorProvider.env();
-  const sdk = new TokadaptSDK({
-    provider: SolanaProvider.init({
-      connection: anchorProvider.connection,
-      wallet: anchorProvider.wallet,
-      opts: anchorProvider.opts,
-    }),
-  });
+  const sdk = initSDK();
 
   it('is creating with default parameters', async () => {
-    const tokadaptState = new Keypair();
-    const { path: tokadaptStatePath, cleanup } = await file();
-    await fs.writeFile(
-      tokadaptStatePath,
-      JSON.stringify(Array.from(tokadaptState.secretKey))
-    );
+    const {
+      path: tokadaptStatePath,
+      cleanup,
+      keypair: tokadaptState,
+    } = await createFileKeypair();
     const inputMint = await MintHelper.create({
       provider: sdk.provider,
     });
     const outputMint = await MintHelper.create({
       provider: sdk.provider,
     });
-    
+
     await expect([
       'pnpm',
       [
@@ -69,6 +56,24 @@ describe('Create tokadapt', () => {
     expect(tokadapStateData.adminAuthority.toBase58()).toBe(
       sdk.provider.walletKey.toBase58()
     );
+
+    await cleanup();
+  });
+
+  it('is fails if input mint not passed', async () => {
+    const {
+      path: tokadaptStatePath,
+      cleanup,
+      keypair: tokadaptState,
+    } = await createFileKeypair();
+
+    await expect([
+      'pnpm',
+      ['cli', 'create', '--tokadapt', tokadaptStatePath],
+    ]).toHaveMatchingSpawnOutput({
+      code: 1,
+      stderr: /error: required option '--input-mint <pubkey>' not specified/,
+    });
 
     await cleanup();
   });
