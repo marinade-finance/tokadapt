@@ -25,6 +25,7 @@ export function installSetAdmin(program: Command) {
     .option('--new-admin <pubkey>', 'New admin', parsePubkey)
     .option('--rent-payer <keypair>', 'Rent payer', parseKeypair)
     .option('--proposer <keypair>', 'Proposer', parseKeypair)
+    .option('--log-only', 'Do not create multisig transaction')
     .action(
       async ({
         tokadapt,
@@ -32,12 +33,14 @@ export function installSetAdmin(program: Command) {
         newAdmin,
         rentPayer,
         proposer,
+        logOnly,
       }: {
         tokadapt: Promise<PublicKey>;
         admin?: Promise<Keypair>;
         newAdmin: Promise<PublicKey>;
         rentPayer: Promise<Keypair>;
         proposer?: Promise<Keypair>;
+        logOnly?: boolean;
       }) => {
         const context = useContext();
         await setAdmin({
@@ -48,6 +51,7 @@ export function installSetAdmin(program: Command) {
           newAdmin: await newAdmin,
           rentPayer: await rentPayer,
           proposer: await proposer,
+          logOnly,
           simulate: context.simulate,
         });
       }
@@ -62,6 +66,7 @@ export async function setAdmin({
   newAdmin,
   rentPayer,
   proposer,
+  logOnly,
   simulate,
 }: {
   tokadapt: TokadaptSDK;
@@ -71,6 +76,7 @@ export async function setAdmin({
   newAdmin: PublicKey;
   rentPayer?: Keypair;
   proposer?: Keypair;
+  logOnly?: boolean;
   simulate?: boolean;
 }) {
   const stateWrapper = new TokadaptStateWrapper(tokadapt, state);
@@ -86,6 +92,7 @@ export async function setAdmin({
     address: stateData.adminAuthority,
     proposer,
     rentPayer,
+    logOnly,
   });
 
   let tx = await stateWrapper.setAdmin({
@@ -98,6 +105,10 @@ export async function setAdmin({
 
   if (admin) {
     tx.addSigners(admin);
+  }
+
+  if (tx.instructions.length === 0) {
+    return;
   }
 
   if (simulate) {

@@ -23,7 +23,7 @@ importers:
   packages/cli:
     specifiers:
       '@gokiprotocol/client': ^0.11.1
-      '@marinade.finance/solana-cli-utils': 0.0.4
+      '@marinade.finance/solana-cli-utils': 0.0.8
       '@marinade.finance/tokadapt-sdk': workspace:^1.0.0
       '@project-serum/anchor': ~0.24.2
       '@saberhq/anchor-contrib': ^1.13.32
@@ -46,7 +46,7 @@ importers:
       tmp-promise: ^3.0.3
     dependencies:
       '@gokiprotocol/client': 0.11.1_q6knmwwocjnfrulnlfedgzc3fy
-      '@marinade.finance/solana-cli-utils': 0.0.4
+      '@marinade.finance/solana-cli-utils': 0.0.8
       '@marinade.finance/tokadapt-sdk': link:../sdk
       '@saberhq/anchor-contrib': 1.13.32_5e7xdhjddkgupxyippraiaixl4
       '@saberhq/token-utils': 1.13.32_mcedlenlj4su5l7hjlbzxa24rq
@@ -465,7 +465,7 @@ packages:
       '@ethersproject/logger': 5.6.0
       hash.js: 1.1.7
 
-  /@gokiprotocol/client/0.11.1_a635xpuo4dgq7ojdwp3pbg3o6e:
+  /@gokiprotocol/client/0.11.1_fiehcacr6gw2n2xnbmzmo4fkta:
     resolution: {integrity: sha512-ckMxHxD1GLtllWzQWHah61FxkuQhJo79MPEJsdCF8eiLA/orN/nAU8N5kzihl/Rm67RjnV452e3Sjoyn1MLmLA==}
     peerDependencies:
       '@project-serum/anchor': '>=0.24'
@@ -476,9 +476,9 @@ packages:
       bn.js: ^5
     dependencies:
       '@project-serum/anchor': 0.24.2
-      '@saberhq/anchor-contrib': 1.14.1_5e7xdhjddkgupxyippraiaixl4
+      '@saberhq/anchor-contrib': 1.14.2_5e7xdhjddkgupxyippraiaixl4
       '@saberhq/solana-contrib': 1.14.1_ec3plxw5sugvoz2rlipvu5e3ye
-      '@saberhq/token-utils': 1.14.1_mcedlenlj4su5l7hjlbzxa24rq
+      '@saberhq/token-utils': 1.14.2_mcedlenlj4su5l7hjlbzxa24rq
       '@solana/web3.js': 1.53.0
       bn.js: 5.2.1
       lodash.mapvalues: 4.6.0
@@ -802,15 +802,15 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
 
-  /@marinade.finance/solana-cli-utils/0.0.4:
-    resolution: {integrity: sha512-wdAPIIuC0mztCZegz7wXkDQDiTTohB8S8Qzq++vw8Opfc+XvWVu4y0HcHQzlqGCIYETuxQQKF53NLDAuZbe72Q==}
+  /@marinade.finance/solana-cli-utils/0.0.8:
+    resolution: {integrity: sha512-lZCPT23SGRHxgeto12LLWnCnFaLj954RjkQo+b4TnIEckcuWMDkANxc8GKWN7ryndn4Jli3iihSVrnx4qKCZUQ==}
     dependencies:
-      '@gokiprotocol/client': 0.11.1_a635xpuo4dgq7ojdwp3pbg3o6e
+      '@gokiprotocol/client': 0.11.1_fiehcacr6gw2n2xnbmzmo4fkta
       '@project-serum/anchor': 0.24.2
-      '@saberhq/anchor-contrib': 1.14.1_5e7xdhjddkgupxyippraiaixl4
+      '@saberhq/anchor-contrib': 1.14.2_5e7xdhjddkgupxyippraiaixl4
       '@saberhq/solana-contrib': 1.14.1_ec3plxw5sugvoz2rlipvu5e3ye
-      '@saberhq/token-utils': 1.14.1_mcedlenlj4su5l7hjlbzxa24rq
-      '@solana/spl-governance': 0.3.6
+      '@saberhq/token-utils': 1.14.2_mcedlenlj4su5l7hjlbzxa24rq
+      '@solana/spl-governance': 0.3.10
       '@solana/web3.js': 1.53.0
       bn.js: 5.2.1
       expand-tilde: 2.0.2
@@ -895,15 +895,15 @@ packages:
       tslib: 2.4.0
     dev: false
 
-  /@saberhq/anchor-contrib/1.14.1_5e7xdhjddkgupxyippraiaixl4:
-    resolution: {integrity: sha512-eaNkif2grTLOEUrgDeaezfVF836wM0He+AGVNn1igCOfRJQWkWexx1WxyAuPU2yjbzBrZnJN+q2c6wY1LbWTQA==}
+  /@saberhq/anchor-contrib/1.14.2_5e7xdhjddkgupxyippraiaixl4:
+    resolution: {integrity: sha512-oq8jZVLJK67CBP/2IFwIUqZ68swk1Hs5uZ/R4RKCVdn6uJ2U8x7EyXHyy+mq7D94MRhRodJq9HxNZabquTbviA==}
     peerDependencies:
       '@project-serum/anchor': ^0.22 || ^0.23 || ^0.24
       '@solana/web3.js': ^1.42
       bn.js: ^4 || ^5
     dependencies:
       '@project-serum/anchor': 0.24.2
-      '@saberhq/solana-contrib': 1.14.1_ec3plxw5sugvoz2rlipvu5e3ye
+      '@saberhq/solana-contrib': 1.14.2_ec3plxw5sugvoz2rlipvu5e3ye
       '@solana/web3.js': 1.53.0
       bn.js: 5.2.1
       eventemitter3: 4.0.7
@@ -916,6 +916,12 @@ packages:
     resolution: {integrity: sha512-Lll0TKIKTp4KPlwV915OtsyaxyAYLsRAhfoFbf6ezQs48+mdegIHMv3OG9K/YjbfotjbImALlAz70JU2BMh62Q==}
     dependencies:
       tslib: 2.4.0
+
+  /@saberhq/option-utils/1.14.2:
+    resolution: {integrity: sha512-UmAwTRLrVAIBjfzVnpUbJDgcdROPMn5TgYh6+RfbGxvNgdaU2eC3wu/ywF79l+2+A23P9Q1a+3h84WAUMzVLMg==}
+    dependencies:
+      tslib: 2.4.0
+    dev: false
 
   /@saberhq/solana-contrib/1.14.1_ec3plxw5sugvoz2rlipvu5e3ye:
     resolution: {integrity: sha512-HGmAJAWXR/Uaa7bFEwWzCQtkIPI7YGB0Vc76T4/x/fmDO9Cl/PZdxUIUtoKs8BJaR4JSwpEbpLW2oI4kReN6Vg==}
@@ -933,6 +939,24 @@ packages:
       retry: 0.13.1
       tiny-invariant: 1.2.0
       tslib: 2.4.0
+
+  /@saberhq/solana-contrib/1.14.2_ec3plxw5sugvoz2rlipvu5e3ye:
+    resolution: {integrity: sha512-sFgYmXFIdhwJP3P+UG5JG/gw6m8+bGY+gOgjsy6p9Zbb/NmChH8OaJ9PMlL9k9M2VEWLEB+Y/eSLhYaUcU5Whg==}
+    peerDependencies:
+      '@solana/web3.js': ^1.42
+      bn.js: ^4 || ^5
+    dependencies:
+      '@saberhq/option-utils': 1.14.2
+      '@solana/buffer-layout': 4.0.0
+      '@solana/web3.js': 1.53.0
+      '@types/promise-retry': 1.1.3
+      '@types/retry': 0.12.2
+      bn.js: 5.2.1
+      promise-retry: 2.0.1
+      retry: 0.13.1
+      tiny-invariant: 1.2.0
+      tslib: 2.4.0
+    dev: false
 
   /@saberhq/token-utils/1.13.32_mcedlenlj4su5l7hjlbzxa24rq:
     resolution: {integrity: sha512-n5ECiw82IQJwyq9bTkcrbNWVi+lAQoQlJlTmIye8odUQATBsqOWN+clqfrFkn/UMmezO60bo34bUaM0Oir7Pew==}
@@ -957,14 +981,14 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@saberhq/token-utils/1.14.1_mcedlenlj4su5l7hjlbzxa24rq:
-    resolution: {integrity: sha512-sPlU2y+UMijiPxCC7Hz2YU24nGA+FDbqzaFyht45ZxHV4TZ1u07MBoFHQyzvGGnT/ZDRmYAh+Xu4Y187ZDQmyA==}
+  /@saberhq/token-utils/1.14.2_mcedlenlj4su5l7hjlbzxa24rq:
+    resolution: {integrity: sha512-l/uZpjv/r0tTpensH+v71TIDRPD5LnSM/cKm+yXt4O4pdS9JiRG1qBjYhxTxt54exmIeePFyuCQVUfWVWtlI2A==}
     peerDependencies:
       '@solana/web3.js': ^1.42
       bn.js: ^4 || ^5
       jsbi: ^3 || ^4
     dependencies:
-      '@saberhq/solana-contrib': 1.14.1_ec3plxw5sugvoz2rlipvu5e3ye
+      '@saberhq/solana-contrib': 1.14.2_ec3plxw5sugvoz2rlipvu5e3ye
       '@solana/buffer-layout': 4.0.0
       '@solana/spl-token': 0.1.8
       '@solana/web3.js': 1.53.0
@@ -1052,8 +1076,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@solana/spl-governance/0.3.6:
-    resolution: {integrity: sha512-+m+EFgbUt2r9Vd0M/uxXTz09OA8NQEPPQ1UgGagyl1gjq5WYHsqBiesWwzxjJSU1xefw0dvz1NLOZfDTRNBmSg==}
+  /@solana/spl-governance/0.3.10:
+    resolution: {integrity: sha512-WLMCjMiuZnoyGNv9SOY3RWDEkcSJgvgsf2Dcr3iTKVY84868zQJ85TYulAXYHppJP6tM9s4wIqLM2tXqMpBxDA==}
     dependencies:
       '@solana/web3.js': 1.53.0
       bignumber.js: 9.1.0

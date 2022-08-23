@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@gokiprotocol/client": "^0.11.1",
-    "@marinade.finance/solana-cli-utils": "0.0.4",
+    "@marinade.finance/solana-cli-utils": "0.0.8",
     "@marinade.finance/tokadapt-sdk": "workspace:^1.0.0",
     "@saberhq/anchor-contrib": "^1.13.32",
     "@saberhq/token-utils": "^1.13.32",
