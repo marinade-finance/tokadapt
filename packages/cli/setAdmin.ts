@@ -81,11 +81,12 @@ export async function setAdmin({
 }) {
   const stateWrapper = new TokadaptStateWrapper(tokadapt, state);
   const stateData = await stateWrapper.data();
-  const middleware: m.Middleware[] = [];
+
   if (admin && !stateData.adminAuthority.equals(admin.publicKey)) {
     throw new Error(`Expeced admin ${stateData.adminAuthority.toBase58()}`);
   }
 
+  const middleware: m.Middleware[] = [];
   await m.installMultisigMiddleware({
     middleware,
     goki,
@@ -99,6 +100,7 @@ export async function setAdmin({
     admin,
     newAdmin,
   });
+
   for (const m of middleware) {
     tx = await m.apply(tx);
   }
