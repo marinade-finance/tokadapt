@@ -1,6 +1,8 @@
-import { MintHelper } from '@marinade.finance/tokadapt-sdk/test-helpers/mint';
 import { TokadaptStateWrapper } from '@marinade.finance/tokadapt-sdk/state';
-import { createTempFileKeypair } from '@marinade.finance/solana-test-utils';
+import {
+  createTempFileKeypair,
+  MintHelper,
+} from '@marinade.finance/solana-test-utils';
 import { initSDK, shellMatchers } from '../test-helpers';
 
 jest.setTimeout(300000);

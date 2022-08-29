@@ -13,8 +13,6 @@ import {
 const shellMatchers = untyped as () => void;
 export { shellMatchers };
 
-// tokadapt specifc helpers
-
 export const initSDK = () => {
   const anchorProvider = AnchorProvider.env();
   const sdk = new TokadaptSDK({
