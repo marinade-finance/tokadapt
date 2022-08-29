@@ -1,23 +1,16 @@
-import { file } from 'tmp-promise';
-import { Keypair, PublicKey } from '@solana/web3.js';
-import { fs } from 'mz';
+import { PublicKey } from '@solana/web3.js';
 
 import { SolanaProvider } from '@saberhq/solana-contrib';
 import { AnchorProvider, BN } from '@project-serum/anchor';
 import { TokadaptSDK } from '@marinade.finance/tokadapt-sdk';
 import { TokadaptHelper } from '@marinade.finance/tokadapt-sdk/test-helpers/tokadapt';
 
-import shellMatchers from 'jest-shell-matchers';
+import {
+  shellMatchers as untyped,
+  createTempFileKeypair,
+} from '@marinade.finance/solana-test-utils';
 
-// TODO MOVE TO TEST UTIL LIB
-export const createFileKeypair = async (seed?: Keypair) => {
-  const keypair = seed ?? new Keypair();
-
-  const { path, cleanup } = await file();
-  await fs.writeFile(path, JSON.stringify(Array.from(keypair.secretKey)));
-  return { path, cleanup, keypair };
-};
-
+const shellMatchers = untyped as () => void;
 export { shellMatchers };
 
 // tokadapt specifc helpers
@@ -35,7 +28,7 @@ export const createTokadapt = async (sdk: TokadaptSDK, admin?: PublicKey) => {
     path: tokadaptStatePath,
     cleanup,
     keypair: tokadaptState,
-  } = await createFileKeypair();
+  } = await createTempFileKeypair();
 
   const tokadapt = await TokadaptHelper.create({
     sdk,

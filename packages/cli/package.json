@@ -11,10 +11,10 @@
   "license": "ISC",
   "dependencies": {
     "@gokiprotocol/client": "^0.11.1",
-    "@marinade.finance/solana-cli-utils": "0.0.8",
+    "@marinade.finance/solana-cli-utils": "0.0.9",
     "@marinade.finance/tokadapt-sdk": "workspace:^1.0.0",
-    "@saberhq/anchor-contrib": "^1.13.32",
-    "@saberhq/token-utils": "^1.13.32",
+    "@saberhq/anchor-contrib": "^1.14.1",
+    "@saberhq/token-utils": "^1.14.1",
     "@solana/spl-governance": "^0.3.1",
     "@solana/web3.js": "^1.53.0",
     "bn.js": "^5.2.1",
@@ -33,6 +33,7 @@
     "@types/tmp": "^0.2.3",
     "jest": "^28.1.3",
     "jest-shell-matchers": "^1.0.2",
-    "tmp-promise": "^3.0.3"
+    "tmp-promise": "^3.0.3",
+    "@marinade.finance/solana-test-utils": "0.0.14"
   }
 }

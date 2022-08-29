@@ -1,7 +1,7 @@
 import { MintHelper } from '@marinade.finance/tokadapt-sdk/test-helpers/mint';
 import { TokadaptStateWrapper } from '@marinade.finance/tokadapt-sdk/state';
-
-import { initSDK, shellMatchers, createFileKeypair } from '../test-helpers';
+import { createTempFileKeypair } from '@marinade.finance/solana-test-utils';
+import { initSDK, shellMatchers } from '../test-helpers';
 
 jest.setTimeout(300000);
 
@@ -19,7 +19,7 @@ describe('Create tokadapt', () => {
       path: tokadaptStatePath,
       cleanup,
       keypair: tokadaptState,
-    } = await createFileKeypair();
+    } = await createTempFileKeypair();
     const inputMint = await MintHelper.create({
       provider: sdk.provider,
     });
@@ -65,7 +65,7 @@ describe('Create tokadapt', () => {
       path: tokadaptStatePath,
       cleanup,
       keypair: tokadaptState,
-    } = await createFileKeypair();
+    } = await createTempFileKeypair();
 
     await expect([
       'pnpm',
