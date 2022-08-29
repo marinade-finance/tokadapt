@@ -1,7 +1,7 @@
 import { PublicKey } from '@solana/web3.js';
 
 import { SolanaProvider } from '@saberhq/solana-contrib';
-import { AnchorProvider, BN } from '@project-serum/anchor';
+import { AnchorProvider } from '@project-serum/anchor';
 import { TokadaptSDK } from '@marinade.finance/tokadapt-sdk';
 import { TokadaptHelper } from '@marinade.finance/tokadapt-sdk/test-helpers/tokadapt';
 

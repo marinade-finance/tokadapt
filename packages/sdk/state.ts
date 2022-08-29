@@ -15,7 +15,7 @@ import {
   getAssociatedTokenAddress,
   getMinimumBalanceForRentExemptAccount,
   TOKEN_PROGRAM_ID,
-} from '@solana/spl-token';
+} from 'solana-spl-token-modern';
 import BN from 'bn.js';
 
 export class TokadaptStateWrapper {

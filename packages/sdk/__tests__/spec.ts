@@ -1,12 +1,7 @@
 import { AnchorProvider } from '@project-serum/anchor';
 import { SolanaProvider } from '@saberhq/solana-contrib';
-import { getAssociatedTokenAddress } from '@solana/spl-token';
-import {
-  Keypair,
-  LAMPORTS_PER_SOL,
-  ParsedAccountData,
-  PublicKey,
-} from '@solana/web3.js';
+import { getAssociatedTokenAddress } from 'solana-spl-token-modern';
+import { Keypair, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { BN } from 'bn.js';
 import { TokadaptSDK } from '../sdk';
 import { TokadaptHelper } from '../test-helpers/tokadapt';

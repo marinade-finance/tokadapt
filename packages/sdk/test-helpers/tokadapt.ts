@@ -2,7 +2,7 @@ import { Keypair, PublicKey } from '@solana/web3.js';
 import BN from 'bn.js';
 import { TokadaptSDK } from '../sdk';
 import { TokadaptStateWrapper } from '../state';
-import { MintHelper } from './mint';
+import { MintHelper } from '@marinade.finance/solana-test-utils';
 
 export class TokadaptHelper {
   private constructor(
@@ -20,7 +20,7 @@ export class TokadaptHelper {
     inputMint,
     outputMint,
     admin = sdk.provider.walletKey,
-    address
+    address,
   }: {
     sdk: TokadaptSDK;
     inputMint?: MintHelper;

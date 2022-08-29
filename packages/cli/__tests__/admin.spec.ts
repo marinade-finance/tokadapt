@@ -3,8 +3,6 @@ import { Keypair } from '@solana/web3.js';
 import { initSDK, shellMatchers, createTokadapt } from '../test-helpers';
 import { createTempFileKeypair } from '@marinade.finance/solana-test-utils';
 
-import { TransactionEnvelope } from '@saberhq/solana-contrib';
-
 jest.setTimeout(300000);
 
 beforeAll(() => {

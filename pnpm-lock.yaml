@@ -71,18 +71,20 @@ importers:
 
   packages/sdk:
     specifiers:
+      '@marinade.finance/solana-test-utils': ^0.0.14
       '@project-serum/anchor': '0.24'
       '@saberhq/anchor-contrib': ^1.14.4
       '@saberhq/solana-contrib': ^1.14.4
-      '@solana/spl-token': ^0.3.4
       '@solana/web3.js': ^1.54.0
       '@types/bn.js': ^5.1.0
       '@types/jest': ^28.1.6
       bn.js: ^5.2.1
       jest: ^28.1.3
+      solana-spl-token-modern: npm:@solana/spl-token@^0.3.0
     dependencies:
-      '@solana/spl-token': 0.3.4_@solana+web3.js@1.54.1
+      solana-spl-token-modern: /@solana/spl-token/0.3.4_@solana+web3.js@1.54.1
     devDependencies:
+      '@marinade.finance/solana-test-utils': 0.0.14_crgyxjg2jkcs75lxzbrkgguihu
       '@project-serum/anchor': 0.24.2
       '@saberhq/anchor-contrib': 1.14.4_4eiiqqp3y2nrmao6ji34i7ppcm
       '@saberhq/solana-contrib': 1.14.4_7pcwljqf3o3a3kox534zrcd5mm
@@ -756,6 +758,32 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
 
+  /@marinade.finance/solana-cli-utils/0.0.13_crgyxjg2jkcs75lxzbrkgguihu:
+    resolution: {integrity: sha512-cx16cgp/CRYko/Rfq7z3UcK0Ar99LP+wXf+SIvPyA15+NyigKetpv8Bp708V138aDMNZNYGdaI/ZJZ7L8iiu4Q==}
+    peerDependencies:
+      '@gokiprotocol/client': ^0.11.1
+      '@project-serum/anchor': '0.24'
+      '@saberhq/anchor-contrib': ^1.14.4
+      '@saberhq/solana-contrib': ^1.14.4
+      '@saberhq/token-utils': ^1.14.4
+      '@solana/web3.js': ^1.54.0
+      bn.js: ^5.2.1
+      jsbi: ^4.3.0
+    dependencies:
+      '@project-serum/anchor': 0.24.2
+      '@saberhq/anchor-contrib': 1.14.4_4eiiqqp3y2nrmao6ji34i7ppcm
+      '@saberhq/solana-contrib': 1.14.4_7pcwljqf3o3a3kox534zrcd5mm
+      '@solana/spl-governance': 0.3.13
+      '@solana/web3.js': 1.54.1
+      bn.js: 5.2.1
+      expand-tilde: 2.0.2
+      mz: 2.7.0
+    transitivePeerDependencies:
+      - bufferutil
+      - encoding
+      - utf-8-validate
+    dev: true
+
   /@marinade.finance/solana-cli-utils/0.0.13_d4ntm6qj3kb4snxy57kterorwq:
     resolution: {integrity: sha512-cx16cgp/CRYko/Rfq7z3UcK0Ar99LP+wXf+SIvPyA15+NyigKetpv8Bp708V138aDMNZNYGdaI/ZJZ7L8iiu4Q==}
     peerDependencies:
@@ -804,6 +832,42 @@ packages:
       - encoding
       - utf-8-validate
     dev: false
+
+  /@marinade.finance/solana-test-utils/0.0.14_crgyxjg2jkcs75lxzbrkgguihu:
+    resolution: {integrity: sha512-qQ8cowQcQE+uPq4x8Wlg0OOC0+XSopxK3JTTVHhpRLDLu9xw43tfCYPVVCvHsuAbNxjPETjmk7GJSYvT3lZZIw==}
+    engines: {node: '>10'}
+    peerDependencies:
+      '@gokiprotocol/client': ^0.11.1
+      '@project-serum/anchor': '0.24'
+      '@quarryprotocol/quarry-sdk': ^5.2.0
+      '@saberhq/anchor-contrib': ^1.14.4
+      '@saberhq/solana-contrib': ^1.14.4
+      '@saberhq/token-utils': ^1.14.4
+      '@solana/web3.js': ^1.54.0
+      bn.js: ^5.2.1
+      jsbi: ^4.3.0
+    dependencies:
+      '@marinade.finance/solana-cli-utils': 0.0.13_crgyxjg2jkcs75lxzbrkgguihu
+      '@project-serum/anchor': 0.24.2
+      '@saberhq/anchor-contrib': 1.14.4_4eiiqqp3y2nrmao6ji34i7ppcm
+      '@saberhq/solana-contrib': 1.14.4_7pcwljqf3o3a3kox534zrcd5mm
+      '@solana/web3.js': 1.54.1
+      bn.js: 5.2.1
+      jest: 28.1.3
+      jest-shell-matchers: 1.0.2_jest@28.1.3
+      mz: 2.7.0
+      solana-spl-token-modern: /@solana/spl-token/0.3.4_@solana+web3.js@1.54.1
+      tmp: 0.2.1
+      tmp-promise: 3.0.3
+    transitivePeerDependencies:
+      - '@types/node'
+      - bufferutil
+      - encoding
+      - node-notifier
+      - supports-color
+      - ts-node
+      - utf-8-validate
+    dev: true
 
   /@marinade.finance/solana-test-utils/0.0.14_uk5bualdxp3eaz6zslzy5jdwka:
     resolution: {integrity: sha512-qQ8cowQcQE+uPq4x8Wlg0OOC0+XSopxK3JTTVHhpRLDLu9xw43tfCYPVVCvHsuAbNxjPETjmk7GJSYvT3lZZIw==}
@@ -3280,7 +3344,7 @@ packages:
     peerDependencies:
       jest: ^23.0.0 || 28
     dependencies:
-      jest: 28.1.3_@types+node@18.7.13
+      jest: 28.1.3
       spawn-with-mocks: 1.0.2
     dev: true
 

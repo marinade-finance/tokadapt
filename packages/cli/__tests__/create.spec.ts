@@ -63,11 +63,7 @@ describe('Create tokadapt', () => {
   });
 
   it('is fails if input mint not passed', async () => {
-    const {
-      path: tokadaptStatePath,
-      cleanup,
-      keypair: tokadaptState,
-    } = await createTempFileKeypair();
+    const { path: tokadaptStatePath, cleanup } = await createTempFileKeypair();
 
     await expect([
       'pnpm',
