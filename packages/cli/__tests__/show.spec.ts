@@ -1,4 +1,5 @@
-import { initSDK, shellMatchers, createFileTokadapt } from '../test-helpers';
+import { TokadaptHelper } from '@marinade.finance/tokadapt-sdk/test-helpers/tokadapt';
+import { initSDK, shellMatchers } from '../test-helpers';
 
 jest.setTimeout(300000);
 
@@ -10,17 +11,14 @@ describe('Show tokadapt', () => {
   const sdk = initSDK();
 
   it('it shows', async () => {
-    const { tokadaptStatePath, cleanup, tokadaptState } =
-      await createFileTokadapt(sdk);
+    const tokadapt = await TokadaptHelper.create({ sdk });
 
     await expect([
       'pnpm',
-      ['cli', 'show', '--tokadapt', tokadaptStatePath],
+      ['cli', 'show', '--tokadapt', tokadapt.state.address.toString()],
     ]).toHaveMatchingSpawnOutput({
       code: 0,
-      stdout: new RegExp(`Tokadapt ${tokadaptState.publicKey.toString()}`),
+      stdout: new RegExp(`Tokadapt ${tokadapt.state.address.toString()}`),
     });
-
-    await cleanup();
   });
 });

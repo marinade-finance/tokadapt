@@ -2,6 +2,7 @@ import { TokadaptStateWrapper } from '@marinade.finance/tokadapt-sdk/state';
 import { Keypair } from '@solana/web3.js';
 import { initSDK, shellMatchers, createFileTokadapt } from '../test-helpers';
 import { createTempFileKeypair } from '@marinade.finance/solana-test-utils';
+import { TokadaptHelper } from '@marinade.finance/tokadapt-sdk/test-helpers/tokadapt';
 
 jest.setTimeout(300000);
 
@@ -9,7 +10,7 @@ beforeAll(() => {
   shellMatchers();
 });
 
-describe('Admin tokadapt', () => {
+describe('Set tokadapt admin', () => {
   const sdk = initSDK();
 
   it('it sets admin with goki middleware', async () => {
@@ -27,8 +28,7 @@ describe('Admin tokadapt', () => {
   });
 
   it('it sets new admin from key', async () => {
-    const { tokadaptStatePath, cleanup, tokadaptState } =
-      await createFileTokadapt(sdk);
+    const tokadapt = await TokadaptHelper.create({ sdk });
 
     const newAdmin = new Keypair();
 
@@ -38,7 +38,7 @@ describe('Admin tokadapt', () => {
         'cli',
         'set-admin',
         '--tokadapt',
-        tokadaptStatePath,
+        tokadapt.state.address.toString(),
         '--new-admin',
         newAdmin.publicKey.toString(),
       ],
@@ -49,7 +49,7 @@ describe('Admin tokadapt', () => {
 
     const tokadaptStateWrapper = new TokadaptStateWrapper(
       sdk,
-      tokadaptState.publicKey
+      tokadapt.state.address
     );
 
     await expect(tokadaptStateWrapper.data()).resolves.toBeTruthy();
@@ -58,13 +58,10 @@ describe('Admin tokadapt', () => {
     expect(tokadapStateData.adminAuthority.toBase58()).toEqual(
       newAdmin.publicKey.toBase58()
     );
-
-    await cleanup();
   });
 
   it('it sets new admin from filesystem  wallet admin', async () => {
-    const { tokadaptStatePath, cleanup, tokadaptState } =
-      await createFileTokadapt(sdk);
+    const tokadapt = await TokadaptHelper.create({ sdk });
 
     const {
       path,
@@ -78,7 +75,7 @@ describe('Admin tokadapt', () => {
         'cli',
         'set-admin',
         '--tokadapt',
-        tokadaptStatePath,
+        tokadapt.state.address.toString(),
         '--new-admin',
         path,
       ],
@@ -89,7 +86,7 @@ describe('Admin tokadapt', () => {
 
     const tokadaptStateWrapper = new TokadaptStateWrapper(
       sdk,
-      tokadaptState.publicKey
+      tokadapt.state.address
     );
 
     await expect(tokadaptStateWrapper.data()).resolves.toBeTruthy();
@@ -99,7 +96,6 @@ describe('Admin tokadapt', () => {
       newAdmin.publicKey.toBase58()
     );
 
-    await cleanup();
     await cleanupAdmin();
   });
 });

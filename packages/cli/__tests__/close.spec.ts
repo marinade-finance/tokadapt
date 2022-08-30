@@ -1,4 +1,5 @@
-import { initSDK, shellMatchers, createFileTokadapt } from '../test-helpers';
+import { initSDK, shellMatchers } from '../test-helpers';
+import { TokadaptHelper } from '@marinade.finance/tokadapt-sdk/test-helpers/tokadapt';
 
 jest.setTimeout(300000);
 
@@ -10,16 +11,14 @@ describe('Close tokadapt', () => {
   const sdk = initSDK();
 
   it('it closes', async () => {
-    const { tokadaptStatePath, cleanup } = await createFileTokadapt(sdk);
+    const tokadapt = await TokadaptHelper.create({ sdk });
 
     await expect([
       'pnpm',
-      ['cli', 'close', '--tokadapt', tokadaptStatePath],
+      ['cli', 'close', '--tokadapt', tokadapt.state.address.toString()],
     ]).toHaveMatchingSpawnOutput({
       code: 0,
       stderr: '',
     });
-
-    await cleanup();
   });
 });

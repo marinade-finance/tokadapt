@@ -1,8 +1,9 @@
 import { BN } from '@project-serum/anchor';
 
-import { LAMPORTS_PER_SOL } from '@solana/web3.js';
+import { LAMPORTS_PER_SOL, Keypair } from '@solana/web3.js';
+import { TokadaptHelper } from '@marinade.finance/tokadapt-sdk/test-helpers/tokadapt';
 
-import { initSDK, shellMatchers, createFileTokadapt } from '../test-helpers';
+import { initSDK, shellMatchers } from '../test-helpers';
 
 jest.setTimeout(300000);
 
@@ -14,9 +15,7 @@ describe('Swap tokadapt', () => {
   const sdk = initSDK();
 
   it('it swaps all', async () => {
-    const { tokadaptStatePath, cleanup, tokadapt } = await createFileTokadapt(
-      sdk
-    );
+    const tokadapt = await TokadaptHelper.create({ sdk });
 
     const STORING_AMOUNT = new BN(3 * LAMPORTS_PER_SOL);
     await tokadapt.fillStorage(STORING_AMOUNT);
@@ -27,12 +26,10 @@ describe('Swap tokadapt', () => {
 
     await expect([
       'pnpm',
-      ['cli', 'swap', '--tokadapt', tokadaptStatePath],
+      ['cli', 'swap', '--tokadapt', tokadapt.state.address.toString()],
     ]).toHaveMatchingSpawnOutput({
       code: 0,
       stderr: '',
     });
-
-    await cleanup();
   });
 });
