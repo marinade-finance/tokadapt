@@ -21,7 +21,10 @@ export const initSDK = () => {
   return sdk;
 };
 
-export const createTokadapt = async (sdk: TokadaptSDK, admin?: PublicKey) => {
+export const createFileTokadapt = async (
+  sdk: TokadaptSDK,
+  admin?: PublicKey
+) => {
   const {
     path: tokadaptStatePath,
     cleanup,

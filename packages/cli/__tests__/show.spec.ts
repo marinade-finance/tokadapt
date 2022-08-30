@@ -1,4 +1,4 @@
-import { initSDK, shellMatchers, createTokadapt } from '../test-helpers';
+import { initSDK, shellMatchers, createFileTokadapt } from '../test-helpers';
 
 jest.setTimeout(300000);
 
@@ -10,9 +10,8 @@ describe('Show tokadapt', () => {
   const sdk = initSDK();
 
   it('it shows', async () => {
-    const { tokadaptStatePath, cleanup, tokadaptState } = await createTokadapt(
-      sdk
-    );
+    const { tokadaptStatePath, cleanup, tokadaptState } =
+      await createFileTokadapt(sdk);
 
     await expect([
       'pnpm',

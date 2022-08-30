@@ -1,6 +1,6 @@
 import { TokadaptStateWrapper } from '@marinade.finance/tokadapt-sdk/state';
 import { Keypair } from '@solana/web3.js';
-import { initSDK, shellMatchers, createTokadapt } from '../test-helpers';
+import { initSDK, shellMatchers, createFileTokadapt } from '../test-helpers';
 import { createTempFileKeypair } from '@marinade.finance/solana-test-utils';
 
 jest.setTimeout(300000);
@@ -13,7 +13,7 @@ describe('Admin tokadapt', () => {
   const sdk = initSDK();
 
   it('it sets admin with goki middleware', async () => {
-    const { tokadaptStatePath, cleanup } = await createTokadapt(sdk);
+    const { tokadaptStatePath, cleanup } = await createFileTokadapt(sdk);
 
     await expect([
       'pnpm',
@@ -27,9 +27,8 @@ describe('Admin tokadapt', () => {
   });
 
   it('it sets new admin from key', async () => {
-    const { tokadaptStatePath, cleanup, tokadaptState } = await createTokadapt(
-      sdk
-    );
+    const { tokadaptStatePath, cleanup, tokadaptState } =
+      await createFileTokadapt(sdk);
 
     const newAdmin = new Keypair();
 
@@ -64,9 +63,8 @@ describe('Admin tokadapt', () => {
   });
 
   it('it sets new admin from filesystem  wallet admin', async () => {
-    const { tokadaptStatePath, cleanup, tokadaptState } = await createTokadapt(
-      sdk
-    );
+    const { tokadaptStatePath, cleanup, tokadaptState } =
+      await createFileTokadapt(sdk);
 
     const {
       path,
