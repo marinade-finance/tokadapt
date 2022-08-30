@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@marinade.finance/solana-test-utils": "^0.0.14",
+    "@marinade.finance/solana-test-utils": "^0.0.15",
     "@project-serum/anchor": "0.24",
     "@saberhq/anchor-contrib": "^1.14.4",
     "@saberhq/solana-contrib": "^1.14.4",
