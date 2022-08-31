@@ -64,7 +64,7 @@ export class TokadaptHelper {
     await tx.confirm();
     await wrapper.reload();
 
-    return new TokadaptHelper(inputMint, outputMint, wrapper);
+    return new TokadaptHelper(inputMint, outputMint, wrapper, adminAuthority);
   }
 
   async fillStorage(amount: BN) {
