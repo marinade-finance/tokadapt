@@ -34,6 +34,21 @@ describe('tokadapt-sdk', () => {
     );
   });
 
+  describe('set-admin', () => {
+    it('can set admin', async () => {
+      const tokadapt = await TokadaptHelper.create({
+        sdk,
+      });
+      const newAdmin = new Keypair().publicKey;
+      const tx = await tokadapt.state.setAdmin({
+        newAdmin,
+      });
+      await expect(tx.confirm()).resolves.toBeDefined();
+      const { adminAuthority } = await tokadapt.state.reload();
+      expect(adminAuthority.toBase58()).toBe(newAdmin.toBase58());
+    });
+  });
+
   it('Can be closed', async () => {
     const tokadapt = await TokadaptHelper.create({
       sdk,
