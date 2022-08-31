@@ -6,9 +6,14 @@ tokadapt = "tokdh9ZbWPxkFzqsKqeAwLDk6J6a8NBZtQanVuuENxa"
 [programs.localnet]
 tokadapt = "tokdh9ZbWPxkFzqsKqeAwLDk6J6a8NBZtQanVuuENxa"
 
+[[test.genesis]]
+address = "GokivDYuQXPZCWRkwMhdH2h91KpDQXBEmpgBgs55bnpH"
+program = "fixtures/smart_wallet.so"
+
 [provider]
 cluster = "localnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
 test = "pnpm _test"
+
