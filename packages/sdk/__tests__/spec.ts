@@ -40,14 +40,12 @@ describe('tokadapt-sdk', () => {
     });
     const STORING_AMOUNT = new BN(3 * LAMPORTS_PER_SOL);
     await tokadapt.fillStorage(STORING_AMOUNT);
-    const tokadaptData = await tokadapt.state.data();
+    const { outputStorage } = await tokadapt.state.data();
 
     const stateRent = await sdk.provider.connection.getBalance(
       tokadapt.state.address
     );
-    const storageRent = await sdk.provider.connection.getBalance(
-      tokadaptData.outputStorage
-    );
+    const storageRent = await sdk.provider.connection.getBalance(outputStorage);
 
     const rentCollector = new Keypair().publicKey;
     const tx = await tokadapt.state.close({
@@ -56,15 +54,20 @@ describe('tokadapt-sdk', () => {
     await tx.confirm();
 
     expect(
-      await sdk.provider.connection.getBalance(rentCollector)
-    ).toStrictEqual(stateRent + storageRent);
+      sdk.provider.getAccountInfo(tokadapt.state.address)
+    ).resolves.toBeNull();
+    expect(
+      sdk.provider.connection.getBalance(rentCollector)
+    ).resolves.toStrictEqual(stateRent + storageRent);
     const tokenCollector = await getAssociatedTokenAddress(
-      await tokadapt.state.outputMint(),
+      tokadapt.outputMint.address,
       rentCollector
     );
-    const tokenCollectorBalance =
-      await sdk.provider.connection.getTokenAccountBalance(tokenCollector);
-    expect(tokenCollectorBalance.value.amount).toBe(STORING_AMOUNT.toString());
+    expect(
+      sdk.provider.connection
+        .getTokenAccountBalance(tokenCollector)
+        .then(b => b.value.amount)
+    ).resolves.toBe(STORING_AMOUNT.toString());
   });
 
   it('Is swapping all!', async () => {
@@ -79,19 +82,25 @@ describe('tokadapt-sdk', () => {
     });
     const tx = await tokadapt.state.swap({});
     await tx.confirm();
-    const inputBalance = await sdk.provider.connection.getTokenAccountBalance(
-      await getAssociatedTokenAddress(
-        tokadapt.inputMint.address,
-        sdk.provider.walletKey
-      )
+
+    const inputAccount = await getAssociatedTokenAddress(
+      tokadapt.inputMint.address,
+      sdk.provider.walletKey
     );
-    expect(inputBalance.value.amount).toBe('0');
-    const outputBalance = await sdk.provider.connection.getTokenAccountBalance(
-      await getAssociatedTokenAddress(
-        tokadapt.outputMint.address,
-        sdk.provider.walletKey
-      )
+    expect(
+      sdk.provider.connection
+        .getTokenAccountBalance(inputAccount)
+        .then(b => b.value.amount)
+    ).resolves.toBe('0');
+
+    const outputAccount = await getAssociatedTokenAddress(
+      tokadapt.outputMint.address,
+      sdk.provider.walletKey
     );
-    expect(outputBalance.value.amount).toBe(SWAPPING_AMOUNT.toString());
+    expect(
+      sdk.provider.connection
+        .getTokenAccountBalance(outputAccount)
+        .then(b => b.value.amount)
+    ).resolves.toBe(SWAPPING_AMOUNT.toString());
   });
 });
