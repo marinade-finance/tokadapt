@@ -2,7 +2,7 @@ import { Keypair, PublicKey } from '@solana/web3.js';
 import BN from 'bn.js';
 import { TokadaptSDK } from '../sdk';
 import { TokadaptStateWrapper } from '../state';
-import { MintHelper } from './mint';
+import { MintHelper } from '@marinade.finance/solana-test-utils';
 
 export class TokadaptHelper {
   private constructor(
@@ -20,11 +20,13 @@ export class TokadaptHelper {
     inputMint,
     outputMint,
     admin = sdk.provider.walletKey,
+    address,
   }: {
     sdk: TokadaptSDK;
     inputMint?: MintHelper;
     outputMint?: MintHelper;
     admin?: PublicKey;
+    address?: Keypair;
   }): Promise<TokadaptHelper> {
     if (!inputMint) {
       inputMint = await MintHelper.create({
@@ -40,7 +42,7 @@ export class TokadaptHelper {
 
     const { tx, wrapper } = await TokadaptStateWrapper.create({
       sdk,
-      address: new Keypair(),
+      address: address ?? new Keypair(),
       admin,
       inputMint: inputMint.address,
       outputMint: outputMint.address,
