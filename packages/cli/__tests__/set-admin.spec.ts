@@ -124,7 +124,7 @@ describe('Set tokadapt admin', () => {
         );
 
         for (const tx of txs) {
-          await tx;
+          await multisig.executeTransaction(await tx);
         }
 
         const { adminAuthority } = await tokadapt.state.reload();
