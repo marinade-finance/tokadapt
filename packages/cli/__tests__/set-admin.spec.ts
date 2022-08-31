@@ -1,4 +1,3 @@
-import { TokadaptStateWrapper } from '@marinade.finance/tokadapt-sdk/state';
 import { Keypair } from '@solana/web3.js';
 import { initSDK, shellMatchers, createFileTokadapt } from '../test-helpers';
 import { createTempFileKeypair } from '@marinade.finance/solana-test-utils';
@@ -13,7 +12,7 @@ beforeAll(() => {
 describe('Set tokadapt admin', () => {
   const sdk = initSDK();
 
-  it('it sets admin with goki middleware', async () => {
+  it('it sets admin from file wallet', async () => {
     const { tokadaptStatePath, cleanup } = await createFileTokadapt(sdk);
 
     await expect([
@@ -47,27 +46,20 @@ describe('Set tokadapt admin', () => {
       stderr: '',
     });
 
-    const tokadaptStateWrapper = new TokadaptStateWrapper(
-      sdk,
-      tokadapt.state.address
-    );
+    const { adminAuthority } = await tokadapt.state.reload();
 
-    await expect(tokadaptStateWrapper.data()).resolves.toBeTruthy();
-    const tokadapStateData = await tokadaptStateWrapper.data();
-
-    expect(tokadapStateData.adminAuthority.toBase58()).toEqual(
-      newAdmin.publicKey.toBase58()
-    );
+    expect(adminAuthority.toBase58()).toEqual(newAdmin.publicKey.toBase58());
   });
 
-  it('it sets new admin from filesystem  wallet admin', async () => {
-    const tokadapt = await TokadaptHelper.create({ sdk });
+  it('it sets new admin using original admin signature', async () => {
+    const { path, keypair: admin, cleanup } = await createTempFileKeypair();
 
-    const {
-      path,
-      keypair: newAdmin,
-      cleanup: cleanupAdmin,
-    } = await createTempFileKeypair();
+    const tokadapt = await TokadaptHelper.create({
+      sdk,
+      admin: admin.publicKey,
+    });
+
+    const newAdmin = new Keypair();
 
     await expect([
       'pnpm',
@@ -76,26 +68,20 @@ describe('Set tokadapt admin', () => {
         'set-admin',
         '--tokadapt',
         tokadapt.state.address.toString(),
-        '--new-admin',
+        '--admin',
         path,
+        '--new-admin',
+        newAdmin.publicKey.toString(),
       ],
     ]).toHaveMatchingSpawnOutput({
       code: 0,
       stderr: '',
     });
 
-    const tokadaptStateWrapper = new TokadaptStateWrapper(
-      sdk,
-      tokadapt.state.address
-    );
+    const { adminAuthority } = await tokadapt.state.reload();
 
-    await expect(tokadaptStateWrapper.data()).resolves.toBeTruthy();
-    const tokadapStateData = await tokadaptStateWrapper.data();
+    expect(adminAuthority.toBase58()).toEqual(newAdmin.publicKey.toBase58());
 
-    expect(tokadapStateData.adminAuthority.toBase58()).toEqual(
-      newAdmin.publicKey.toBase58()
-    );
-
-    await cleanupAdmin();
+    await cleanup();
   });
 });
