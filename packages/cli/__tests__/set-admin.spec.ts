@@ -3,10 +3,7 @@ import { initSDK, shellMatchers, createFileTokadapt } from '../test-helpers';
 import { createTempFileKeypair } from '@marinade.finance/solana-test-utils';
 import { TokadaptHelper } from '@marinade.finance/tokadapt-sdk/test-helpers/tokadapt';
 
-import {
-  MultisigHelper,
-  MULTISIG_FACTORIES,
-} from '@marinade.finance/solana-test-utils';
+import { MULTISIG_FACTORIES } from '@marinade.finance/solana-test-utils';
 import BN from 'bn.js';
 
 jest.setTimeout(300000);
