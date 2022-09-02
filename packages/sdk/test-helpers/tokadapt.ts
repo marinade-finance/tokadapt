@@ -4,7 +4,6 @@ import { TokadaptSDK } from '../sdk';
 import { TokadaptStateWrapper } from '../state';
 import {
   MintHelper,
-  MultisigHelper,
   SignerHelper,
   WalletSignerHelper,
 } from '@marinade.finance/solana-test-utils';
@@ -14,7 +13,7 @@ export class TokadaptHelper {
     readonly inputMint: MintHelper,
     readonly outputMint: MintHelper,
     readonly state: TokadaptStateWrapper,
-    public readonly admin?: SignerHelper
+    public readonly admin: SignerHelper
   ) {}
 
   get sdk() {
