@@ -5,6 +5,8 @@ import { TokadaptStateWrapper } from '../state';
 import {
   MintHelper,
   MultisigHelper,
+  SignerHelper,
+  WalletSignerHelper,
 } from '@marinade.finance/solana-test-utils';
 
 export class TokadaptHelper {
@@ -12,7 +14,7 @@ export class TokadaptHelper {
     readonly inputMint: MintHelper,
     readonly outputMint: MintHelper,
     readonly state: TokadaptStateWrapper,
-    public readonly admin?: PublicKey | Keypair | MultisigHelper
+    public readonly admin?: SignerHelper
   ) {}
 
   get sdk() {
@@ -23,23 +25,17 @@ export class TokadaptHelper {
     sdk,
     inputMint,
     outputMint,
-    admin = sdk.provider.walletKey,
+    admin = new WalletSignerHelper(sdk.provider.wallet),
     address,
   }: {
     sdk: TokadaptSDK;
     inputMint?: MintHelper;
     outputMint?: MintHelper;
-    admin?: PublicKey | Keypair | MultisigHelper;
+    admin?: SignerHelper;
     address?: Keypair;
   }): Promise<TokadaptHelper> {
     let adminAuthority: PublicKey;
-    if ('authority' in admin) {
-      adminAuthority = admin.authority;
-    } else if (admin instanceof PublicKey) {
-      adminAuthority = admin;
-    } else {
-      adminAuthority = admin?.publicKey || sdk.provider.walletKey;
-    }
+    adminAuthority = admin.authority;
 
     if (!inputMint) {
       inputMint = await MintHelper.create({
