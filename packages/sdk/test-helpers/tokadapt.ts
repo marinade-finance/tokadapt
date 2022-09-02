@@ -33,7 +33,7 @@ export class TokadaptHelper {
     address?: Keypair;
   }): Promise<TokadaptHelper> {
     let adminAuthority: PublicKey;
-    if (admin instanceof MultisigHelper) {
+    if ('authority' in admin) {
       adminAuthority = admin.authority;
     } else if (admin instanceof PublicKey) {
       adminAuthority = admin;
@@ -64,7 +64,7 @@ export class TokadaptHelper {
     await tx.confirm();
     await wrapper.reload();
 
-    return new TokadaptHelper(inputMint, outputMint, wrapper, adminAuthority);
+    return new TokadaptHelper(inputMint, outputMint, wrapper, admin);
   }
 
   async fillStorage(amount: BN) {

@@ -114,14 +114,13 @@ describe('Set tokadapt admin', () => {
 
         await multisig.reload();
 
-        const txs = new Array(multisig.numTransactions.toNumber()).map(
-          (_v, i) => {
-            return multisig.transactionByIndex(new BN(i));
-          }
-        );
-
-        for (const tx of txs) {
-          await multisig.executeTransaction(await tx);
+        for (
+          let index = 0;
+          index < multisig.numTransactions.toNumber();
+          index++
+        ) {
+          const txKey = await multisig.transactionByIndex(new BN(index));
+          await multisig.executeTransaction(txKey);
         }
 
         const { adminAuthority } = await tokadapt.state.reload();
