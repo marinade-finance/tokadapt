@@ -8,6 +8,7 @@ import { TokadaptHelper } from '@marinade.finance/tokadapt-sdk/test-helpers/toka
 import {
   shellMatchers as untyped,
   createTempFileKeypair,
+  KeypairSignerHelper,
 } from '@marinade.finance/solana-test-utils';
 
 const shellMatchers = untyped as () => void;
@@ -21,10 +22,7 @@ export const initSDK = () => {
   return sdk;
 };
 
-export const createFileTokadapt = async (
-  sdk: TokadaptSDK,
-  admin?: PublicKey
-) => {
+export const createFileTokadapt = async (sdk: TokadaptSDK) => {
   const {
     path: tokadaptStatePath,
     cleanup,
@@ -34,7 +32,6 @@ export const createFileTokadapt = async (
   const tokadapt = await TokadaptHelper.create({
     sdk,
     address: tokadaptState,
-    admin,
   });
 
   return { tokadapt, tokadaptState, tokadaptStatePath, cleanup };
