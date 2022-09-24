@@ -10,6 +10,10 @@ tokadapt = "tokdh9ZbWPxkFzqsKqeAwLDk6J6a8NBZtQanVuuENxa"
 address = "GokivDYuQXPZCWRkwMhdH2h91KpDQXBEmpgBgs55bnpH"
 program = "fixtures/smart_wallet.so"
 
+[[test.genesis]]
+address = "GovER5Lthms3bLBqWub97yVrMmEogzX7xNjdXpPPCVZw"
+program = "fixtures/spl-governance.so"
+
 [provider]
 cluster = "localnet"
 wallet = "~/.config/solana/id.json"

@@ -11,31 +11,31 @@
   "license": "ISC",
   "dependencies": {
     "@gokiprotocol/client": "^0.11.1",
-    "@marinade.finance/solana-cli-utils": "0.0.16",
+    "@marinade.finance/solana-cli-utils": "0.0.28",
     "@marinade.finance/tokadapt-sdk": "workspace:^1.0.0",
     "@saberhq/anchor-contrib": "^1.13.32",
     "@saberhq/token-utils": "^1.13.32",
-    "@solana/spl-governance": "^0.3.1",
+    "@solana/spl-governance": "^0.3.13",
     "@solana/web3.js": "^1.53.0",
     "bn.js": "^5.2.1",
     "commander": "^9.4.0",
     "jsbi": "^4.3.0"
   },
   "devDependencies": {
-    "@quarryprotocol/quarry-sdk": "^5.2.0",
+    "@marinade.finance/solana-test-utils": "^0.0.32",
     "@project-serum/anchor": "0.24",
+    "@quarryprotocol/quarry-sdk": "^5.2.0",
     "@saberhq/anchor-contrib": "^1.14.4",
     "@saberhq/solana-contrib": "^1.14.4",
-    "@marinade.finance/solana-test-utils": "^0.0.17",
     "@types/bn.js": "^5.1.0",
     "@types/mz": "^2.7.4",
     "@types/node": "^18.7.13",
     "@types/node-fetch": "^2.6.2",
     "@types/tmp": "^0.2.3",
+    "bn.js": "^5.2.1",
     "jest": "^28.1.3",
     "jest-shell-matchers": "^1.0.2",
-    "tmp-promise": "^3.0.3",
-    "bn.js": "^5.2.1",
-    "solana-spl-token-modern": "npm:@solana/spl-token@^0.3.0"
+    "solana-spl-token-modern": "npm:@solana/spl-token@^0.3.0",
+    "tmp-promise": "^3.0.3"
   }
 }

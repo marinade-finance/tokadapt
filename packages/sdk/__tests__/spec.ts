@@ -53,6 +53,7 @@ describe('tokadapt-sdk', () => {
       it(`Can setAdmin with ${multisigFactory.name}`, async () => {
         const multisig = await multisigFactory.create({
           provider: sdk.provider,
+          side: 'community',
         });
         const tokadapt = await TokadaptHelper.create({
           sdk,

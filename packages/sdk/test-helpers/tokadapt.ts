@@ -33,9 +33,6 @@ export class TokadaptHelper {
     admin?: SignerHelper;
     address?: Keypair;
   }): Promise<TokadaptHelper> {
-    let adminAuthority: PublicKey;
-    adminAuthority = admin.authority;
-
     if (!inputMint) {
       inputMint = await MintHelper.create({
         provider: sdk.provider,
@@ -51,7 +48,7 @@ export class TokadaptHelper {
     const { tx, wrapper } = await TokadaptStateWrapper.create({
       sdk,
       address: address ?? new Keypair(),
-      admin: adminAuthority,
+      admin: admin.authority,
       inputMint: inputMint.address,
       outputMint: outputMint.address,
     });
