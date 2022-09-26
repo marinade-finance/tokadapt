@@ -27,6 +27,7 @@ export function installClose(program: Command) {
     .option('--rent-payer <keypair>', 'Rent payer', parseKeypair)
     .option('--proposer <keypair>', 'Proposer', parseKeypair)
     .option('--log-only', 'Do not create multisig transaction')
+    .option('--community', 'Create community proposal')
     .action(
       async ({
         tokadapt,
@@ -36,6 +37,7 @@ export function installClose(program: Command) {
         rentPayer,
         proposer,
         logOnly,
+        community,
       }: {
         tokadapt: Promise<PublicKey>;
         admin?: Promise<Keypair>;
@@ -44,6 +46,7 @@ export function installClose(program: Command) {
         rentPayer?: Promise<Keypair>;
         proposer?: Promise<Keypair>;
         logOnly?: boolean;
+        community?: boolean;
       }) => {
         const context = useContext();
         await close({
@@ -56,6 +59,7 @@ export function installClose(program: Command) {
           rentPayer: await rentPayer,
           proposer: await proposer,
           logOnly,
+          community,
           simulate: context.simulate,
         });
       }
@@ -72,6 +76,7 @@ export async function close({
   rentPayer,
   proposer,
   logOnly,
+  community = false,
   simulate,
 }: {
   tokadapt: TokadaptSDK;
@@ -83,6 +88,7 @@ export async function close({
   rentPayer?: Keypair;
   proposer?: Keypair;
   logOnly?: boolean;
+  community?: boolean;
   simulate?: boolean;
 }) {
   const stateWrapper = new TokadaptStateWrapper(tokadapt, state);
@@ -95,6 +101,7 @@ export async function close({
     proposer,
     rentPayer,
     logOnly,
+    community,
   });
   let tx = await stateWrapper.close({
     admin,

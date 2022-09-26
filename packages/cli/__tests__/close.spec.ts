@@ -102,7 +102,12 @@ describe('Close tokadapt', () => {
 
         await expect([
           'pnpm',
-          ['cli', 'close', '--tokadapt', tokadapt.state.address.toString()],
+          [
+            'cli',
+            'close',
+            '--tokadapt',
+            tokadapt.state.address.toString(),
+          ].concat(multisigFactory.side === 'community' ? ['--community'] : []),
         ]).toHaveMatchingSpawnOutput({
           code: 0,
           stderr: '',
@@ -154,7 +159,7 @@ describe('Close tokadapt', () => {
             tokadapt.state.address.toString(),
             '--proposer',
             path,
-          ],
+          ].concat(multisigFactory.side === 'community' ? ['--community'] : []),
         ]).toHaveMatchingSpawnOutput({
           code: 0,
           stderr: '',

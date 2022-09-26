@@ -109,7 +109,7 @@ describe('Set tokadapt admin', () => {
             tokadapt.state.address.toString(),
             '--new-admin',
             newAdmin.publicKey.toString(),
-          ],
+          ].concat(multisigFactory.side === 'community' ? ['--community'] : []),
         ]).toHaveMatchingSpawnOutput({
           code: 0,
           stderr: '',
@@ -167,7 +167,7 @@ describe('Set tokadapt admin', () => {
             newAdmin.publicKey.toString(),
             '--proposer',
             path,
-          ],
+          ].concat(multisigFactory.side === 'community' ? ['--community'] : []),
         ]).toHaveMatchingSpawnOutput({
           code: 0,
           stderr: '',
