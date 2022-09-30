@@ -66,10 +66,10 @@ describe('tokadapt-sdk', () => {
         const tx = await tokadapt.state.setAdmin({
           newAdmin,
         });
-        const txAddress = await multisig.createTransaction(tx);
         await expect(
-          multisig.executeTransaction(txAddress)
-        ).resolves.toBeUndefined();
+          multisig.runTx(tx).then(t => t.response.meta?.err)
+        ).resolves.toBeNull();
+
         const { adminAuthority } = await tokadapt.state.reload();
         expect(adminAuthority.toBase58()).toBe(newAdmin.toBase58());
       });

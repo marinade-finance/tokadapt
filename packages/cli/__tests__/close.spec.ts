@@ -117,16 +117,9 @@ describe('Close tokadapt', () => {
           stderr: '',
         });
 
-        await multisig.reload();
-
-        for (
-          let index = 0;
-          index < multisig.numTransactions.toNumber();
-          index++
-        ) {
-          const txKey = await multisig.transactionByIndex(new BN(index));
-          await multisig.executeTransaction(txKey);
-        }
+        await expect(
+          multisig.executeAllPending().then(t => t.length)
+        ).resolves.toBeGreaterThan(0);
 
         expect(
           sdk.provider.getAccountInfo(tokadapt.state.address)
@@ -146,7 +139,7 @@ describe('Close tokadapt', () => {
             new KeypairSignerHelper(new Keypair()),
             new KeypairSignerHelper(new Keypair()),
           ],
-          threshold: new BN(2),
+          threshold: 2,
         });
 
         const tokadapt = await TokadaptHelper.create({
@@ -169,16 +162,9 @@ describe('Close tokadapt', () => {
           stderr: '',
         });
 
-        await multisig.reload();
-
-        for (
-          let index = 0;
-          index < multisig.numTransactions.toNumber();
-          index++
-        ) {
-          const txKey = await multisig.transactionByIndex(new BN(index));
-          await multisig.executeTransaction(txKey);
-        }
+        await expect(
+          multisig.executeAllPending().then(t => t.length)
+        ).resolves.toBeGreaterThan(0);
 
         expect(
           sdk.provider.getAccountInfo(tokadapt.state.address)

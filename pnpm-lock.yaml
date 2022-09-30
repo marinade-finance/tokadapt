@@ -25,7 +25,7 @@ importers:
       '@gokiprotocol/client': ^0.11.1
       '@marinade.finance/kedgeree-sdk': ^1.0.2
       '@marinade.finance/solana-cli-utils': 0.0.41
-      '@marinade.finance/solana-test-utils': ^0.0.41
+      '@marinade.finance/solana-test-utils': ^0.0.43
       '@marinade.finance/tokadapt-sdk': workspace:^1.0.0
       '@project-serum/anchor': '0.24'
       '@quarryprotocol/quarry-sdk': ^5.2.0
@@ -59,7 +59,7 @@ importers:
       commander: 9.4.1
       jsbi: 4.3.0
     devDependencies:
-      '@marinade.finance/solana-test-utils': 0.0.41_i3xzhco3abuhqjgcmky4pehpea
+      '@marinade.finance/solana-test-utils': 0.0.43_i3xzhco3abuhqjgcmky4pehpea
       '@project-serum/anchor': 0.24.2
       '@quarryprotocol/quarry-sdk': 5.3.0_7uxmwer6wykf2l7d77phzx7pdy
       '@saberhq/solana-contrib': 1.14.8_rlhysbdjraz6njags5xbbdvqiy
@@ -77,7 +77,7 @@ importers:
     specifiers:
       '@gokiprotocol/client': ^0.11.1
       '@marinade.finance/kedgeree-sdk': ^1.0.2
-      '@marinade.finance/solana-test-utils': ^0.0.41
+      '@marinade.finance/solana-test-utils': ^0.0.43
       '@project-serum/anchor': '0.24'
       '@quarryprotocol/quarry-sdk': ^5.2.0
       '@saberhq/anchor-contrib': ^1.14.4
@@ -96,7 +96,7 @@ importers:
     devDependencies:
       '@gokiprotocol/client': 0.11.1_vw6oynsrzbhvksua5ubyomw6im
       '@marinade.finance/kedgeree-sdk': 1.0.2_j5nzmglqxfqzguphxhlkcacytm
-      '@marinade.finance/solana-test-utils': 0.0.41_birljb2dutt4zqgwt2pqxxbyiu
+      '@marinade.finance/solana-test-utils': 0.0.43_birljb2dutt4zqgwt2pqxxbyiu
       '@project-serum/anchor': 0.24.2
       '@quarryprotocol/quarry-sdk': 5.3.0_7uxmwer6wykf2l7d77phzx7pdy
       '@saberhq/anchor-contrib': 1.14.8_ux3dy3liwnshd2tddqnci2ilja
@@ -819,8 +819,8 @@ packages:
       - encoding
       - utf-8-validate
 
-  /@marinade.finance/solana-test-utils/0.0.41_birljb2dutt4zqgwt2pqxxbyiu:
-    resolution: {integrity: sha512-7wBE7HdZK/1V+eydtwyLNohYJl+ld2zs4AQCFA4DSQ/wBfVboaVvQYghkwwEp/tFCev1zo1pDpSfFPagwQaDDQ==}
+  /@marinade.finance/solana-test-utils/0.0.43_birljb2dutt4zqgwt2pqxxbyiu:
+    resolution: {integrity: sha512-h0YHOlW3kIDT2UNsj8+LbEA96dMpGxM9Xee0CLwSPNV6fauiP+8Bxsj0I1smzcle9DKfDCD3k5WBE5xVtBoVUQ==}
     engines: {node: '>10'}
     peerDependencies:
       '@gokiprotocol/client': ^0.11.1
@@ -863,8 +863,8 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@marinade.finance/solana-test-utils/0.0.41_i3xzhco3abuhqjgcmky4pehpea:
-    resolution: {integrity: sha512-7wBE7HdZK/1V+eydtwyLNohYJl+ld2zs4AQCFA4DSQ/wBfVboaVvQYghkwwEp/tFCev1zo1pDpSfFPagwQaDDQ==}
+  /@marinade.finance/solana-test-utils/0.0.43_i3xzhco3abuhqjgcmky4pehpea:
+    resolution: {integrity: sha512-h0YHOlW3kIDT2UNsj8+LbEA96dMpGxM9Xee0CLwSPNV6fauiP+8Bxsj0I1smzcle9DKfDCD3k5WBE5xVtBoVUQ==}
     engines: {node: '>10'}
     peerDependencies:
       '@gokiprotocol/client': ^0.11.1

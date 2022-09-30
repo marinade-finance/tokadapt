@@ -119,16 +119,9 @@ describe('Set tokadapt admin', () => {
           stderr: '',
         });
 
-        await multisig.reload();
-
-        for (
-          let index = 0;
-          index < multisig.numTransactions.toNumber();
-          index++
-        ) {
-          const txKey = await multisig.transactionByIndex(new BN(index));
-          await multisig.executeTransaction(txKey);
-        }
+        await expect(
+          multisig.executeAllPending().then(t => t.length)
+        ).resolves.toBeGreaterThan(0);
 
         const { adminAuthority } = await tokadapt.state.reload();
 
@@ -151,7 +144,7 @@ describe('Set tokadapt admin', () => {
             new KeypairSignerHelper(new Keypair()),
             new KeypairSignerHelper(new Keypair()),
           ],
-          threshold: new BN(2),
+          threshold: 2,
         });
 
         const tokadapt = await TokadaptHelper.create({
@@ -177,16 +170,9 @@ describe('Set tokadapt admin', () => {
           stderr: '',
         });
 
-        await multisig.reload();
-
-        for (
-          let index = 0;
-          index < multisig.numTransactions.toNumber();
-          index++
-        ) {
-          const txKey = await multisig.transactionByIndex(new BN(index));
-          await multisig.executeTransaction(txKey);
-        }
+        await expect(
+          multisig.executeAllPending().then(t => t.length)
+        ).resolves.toBeGreaterThan(0);
 
         const { adminAuthority } = await tokadapt.state.reload();
 
