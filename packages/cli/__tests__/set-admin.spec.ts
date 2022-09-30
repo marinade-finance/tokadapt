@@ -8,6 +8,7 @@ import {
   KeypairSignerHelper,
 } from '@marinade.finance/solana-test-utils';
 import BN from 'bn.js';
+import { KedgereeSDK } from '@marinade.finance/kedgeree-sdk';
 
 jest.setTimeout(300000);
 
@@ -17,6 +18,9 @@ beforeAll(() => {
 
 describe('Set tokadapt admin', () => {
   const sdk = initSDK();
+  const kedgeree = new KedgereeSDK({
+    provider: sdk.provider,
+  });
 
   it('it sets admin from file wallet', async () => {
     const { tokadaptStatePath, cleanup } = await createFileTokadapt(sdk);
@@ -95,7 +99,7 @@ describe('Set tokadapt admin', () => {
     describe(`Multisig ${multisigFactory.name}`, () => {
       it(`Sets admin using ${multisigFactory.name}`, async () => {
         const multisig = await multisigFactory.create({
-          provider: sdk.provider,
+          kedgeree,
         });
 
         const tokadapt = await TokadaptHelper.create({ sdk, admin: multisig });
@@ -141,7 +145,7 @@ describe('Set tokadapt admin', () => {
         } = await createTempFileKeypair();
 
         const multisig = await multisigFactory.create({
-          provider: sdk.provider,
+          kedgeree,
           members: [
             new KeypairSignerHelper(proposer),
             new KeypairSignerHelper(new Keypair()),

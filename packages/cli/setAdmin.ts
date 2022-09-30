@@ -4,11 +4,13 @@ import { TokadaptStateWrapper } from '@marinade.finance/tokadapt-sdk/state';
 import { Keypair, PublicKey } from '@solana/web3.js';
 import { Command } from 'commander';
 import { useContext } from './context';
+import { KedgereeSDK } from '@marinade.finance/kedgeree-sdk';
 import {
   parseKeypair,
   parsePubkey,
   middleware as m,
 } from '@marinade.finance/solana-cli-utils';
+import { SplGovDataMiddleware } from '@marinade.finance/solana-cli-utils/middleware';
 
 export function installSetAdmin(program: Command) {
   program
@@ -96,6 +98,9 @@ export async function setAdmin({
   await m.installMultisigMiddleware({
     middleware,
     goki,
+    kedgeree: new KedgereeSDK({
+      provider: tokadapt.provider,
+    }),
     address: stateData.adminAuthority,
     proposer,
     rentPayer,

@@ -14,6 +14,10 @@ program = "fixtures/smart_wallet.so"
 address = "GovER5Lthms3bLBqWub97yVrMmEogzX7xNjdXpPPCVZw"
 program = "fixtures/spl-governance.so"
 
+[[test.genesis]]
+address = "kedgrkbZ5TcjRz2fSpZMcasWzyxd8SuEaXoGfbkPddc"
+program = "fixtures/kedgeree.so"
+
 [provider]
 cluster = "localnet"
 wallet = "~/.config/solana/id.json"

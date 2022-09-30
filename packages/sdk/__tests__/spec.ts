@@ -6,6 +6,7 @@ import { BN } from 'bn.js';
 import { TokadaptSDK } from '../sdk';
 import { TokadaptHelper } from '../test-helpers/tokadapt';
 import { MULTISIG_FACTORIES } from '@marinade.finance/solana-test-utils';
+import { KedgereeSDK } from '@marinade.finance/kedgeree-sdk';
 
 jest.setTimeout(30000);
 
@@ -17,6 +18,9 @@ describe('tokadapt-sdk', () => {
       wallet: anchorProvider.wallet,
       opts: anchorProvider.opts,
     }),
+  });
+  const kedgeree = new KedgereeSDK({
+    provider: sdk.provider,
   });
 
   it('Initializes', async () => {
@@ -52,7 +56,7 @@ describe('tokadapt-sdk', () => {
     for (const multisigFactory of MULTISIG_FACTORIES) {
       it(`Can setAdmin with ${multisigFactory.name}`, async () => {
         const multisig = await multisigFactory.create({
-          provider: sdk.provider,
+          kedgeree,
         });
         const tokadapt = await TokadaptHelper.create({
           sdk,

@@ -9,6 +9,7 @@ import {
   parsePubkey,
   middleware as m,
 } from '@marinade.finance/solana-cli-utils';
+import { KedgereeSDK } from '@marinade.finance/kedgeree-sdk';
 
 export function installClose(program: Command) {
   program
@@ -97,6 +98,9 @@ export async function close({
   await m.installMultisigMiddleware({
     middleware,
     goki,
+    kedgeree: new KedgereeSDK({
+      provider: tokadapt.provider,
+    }),
     address: stateData.adminAuthority,
     proposer,
     rentPayer,

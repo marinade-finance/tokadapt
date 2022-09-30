@@ -8,6 +8,7 @@ import {
   KeypairSignerHelper,
   MULTISIG_FACTORIES,
 } from '@marinade.finance/solana-test-utils';
+import { KedgereeSDK } from '@marinade.finance/kedgeree-sdk';
 
 jest.setTimeout(300000);
 
@@ -17,6 +18,9 @@ beforeAll(() => {
 
 describe('Close tokadapt', () => {
   const sdk = initSDK();
+  const kedgeree = new KedgereeSDK({
+    provider: sdk.provider,
+  });
 
   it('it closes', async () => {
     const tokadapt = await TokadaptHelper.create({ sdk });
@@ -95,7 +99,7 @@ describe('Close tokadapt', () => {
     describe(`Multisig ${multisigFactory.name}`, () => {
       it(`Closes using ${multisigFactory.name}`, async () => {
         const multisig = await multisigFactory.create({
-          provider: sdk.provider,
+          kedgeree,
         });
 
         const tokadapt = await TokadaptHelper.create({ sdk, admin: multisig });
@@ -136,7 +140,7 @@ describe('Close tokadapt', () => {
         } = await createTempFileKeypair();
 
         const multisig = await multisigFactory.create({
-          provider: sdk.provider,
+          kedgeree,
           members: [
             new KeypairSignerHelper(proposer),
             new KeypairSignerHelper(new Keypair()),
