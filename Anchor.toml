@@ -11,7 +11,7 @@ address = "GokivDYuQXPZCWRkwMhdH2h91KpDQXBEmpgBgs55bnpH"
 program = "fixtures/smart_wallet.so"
 
 [[test.genesis]]
-address = "GovER5Lthms3bLBqWub97yVrMmEogzX7xNjdXpPPCVZw"
+address = "MGov1hBkLYJJJMJccS1yPps1M71FopcFxxNupuWeq3R"
 program = "fixtures/spl-governance.so"
 
 [[test.genesis]]
