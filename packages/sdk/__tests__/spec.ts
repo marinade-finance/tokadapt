@@ -67,8 +67,8 @@ describe('tokadapt-sdk', () => {
           newAdmin,
         });
         await expect(
-          multisig.runTx(tx).then(t => t.response.meta?.err)
-        ).resolves.toBeNull();
+          multisig.runTx(tx).then(t => t.length)
+        ).resolves.toBeGreaterThan(0);
 
         const { adminAuthority } = await tokadapt.state.reload();
         expect(adminAuthority.toBase58()).toBe(newAdmin.toBase58());
