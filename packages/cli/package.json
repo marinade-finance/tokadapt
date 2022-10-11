@@ -23,7 +23,7 @@
     "jsbi": "^4.3.0"
   },
   "devDependencies": {
-    "@marinade.finance/solana-test-utils": "^0.0.51",
+    "@marinade.finance/solana-test-utils": "^0.0.54",
     "@project-serum/anchor": "0.24",
     "@quarryprotocol/quarry-sdk": "^5.2.0",
     "@saberhq/anchor-contrib": "^1.14.4",
