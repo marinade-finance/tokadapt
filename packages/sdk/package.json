@@ -11,7 +11,7 @@
   "devDependencies": {
     "@gokiprotocol/client": "^0.11.1",
     "@marinade.finance/kedgeree-sdk": "^1.0.2",
-    "@marinade.finance/solana-test-utils": "^0.0.54",
+    "@marinade.finance/solana-test-utils": "^0.0.56",
     "@project-serum/anchor": "0.24",
     "@quarryprotocol/quarry-sdk": "^5.2.0",
     "@saberhq/anchor-contrib": "^1.14.4",
