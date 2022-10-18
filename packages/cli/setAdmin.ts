@@ -10,7 +10,6 @@ import {
   parsePubkey,
   middleware as m,
 } from '@marinade.finance/solana-cli-utils';
-import { SplGovDataMiddleware } from '@marinade.finance/solana-cli-utils/middleware';
 
 export function installSetAdmin(program: Command) {
   program
