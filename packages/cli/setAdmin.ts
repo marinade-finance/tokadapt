@@ -9,6 +9,7 @@ import {
   parseKeypair,
   parsePubkey,
   middleware as m,
+  parsePubkeyOrKeypair,
 } from '@marinade.finance/solana-cli-utils';
 
 export function installSetAdmin(program: Command) {
@@ -22,7 +23,7 @@ export function installSetAdmin(program: Command) {
         new PublicKey('taspunvVUXLG82PrsCCtQeknWrGHNHWcZmVQYNcQBDg')
       )
     )
-    .option('--admin <keypair>', 'Admin', parseKeypair)
+    .option('--admin <keypair|pubkey>', 'Admin', parsePubkeyOrKeypair)
     .option('--new-admin <pubkey>', 'New admin', parsePubkey)
     .option('--rent-payer <keypair>', 'Rent payer', parseKeypair)
     .option('--proposer <keypair>', 'Proposer', parseKeypair)
@@ -39,7 +40,7 @@ export function installSetAdmin(program: Command) {
         community,
       }: {
         tokadapt: Promise<PublicKey>;
-        admin?: Promise<Keypair>;
+        admin?: Promise<Keypair|PublicKey>;
         newAdmin: Promise<PublicKey>;
         rentPayer: Promise<Keypair>;
         proposer?: Promise<Keypair>;
@@ -78,7 +79,7 @@ export async function setAdmin({
   tokadapt: TokadaptSDK;
   goki: GokiSDK;
   state: PublicKey;
-  admin?: Keypair;
+  admin?: Keypair|PublicKey;
   newAdmin: PublicKey;
   rentPayer?: Keypair;
   proposer?: Keypair;
@@ -89,7 +90,8 @@ export async function setAdmin({
   const stateWrapper = new TokadaptStateWrapper(tokadapt, state);
   const stateData = await stateWrapper.data();
 
-  if (admin && !stateData.adminAuthority.equals(admin.publicKey)) {
+  const adminPubkey = admin instanceof Keypair ? admin.publicKey : admin;
+  if (adminPubkey && !stateData.adminAuthority.equals(adminPubkey)) {
     throw new Error(`Expeced admin ${stateData.adminAuthority.toBase58()}`);
   }
 
@@ -125,7 +127,7 @@ export async function setAdmin({
     tx = await m.apply(tx);
   }
 
-  if (admin) {
+  if (admin && admin instanceof Keypair) {
     tx.addSigners(admin);
   }
 
