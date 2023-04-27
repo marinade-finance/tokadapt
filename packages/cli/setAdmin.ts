@@ -15,7 +15,7 @@ export function installSetAdmin(program: Command) {
   program
     .command('set-admin')
     .requiredOption(
-      '--tokadapt <keypair>',
+      '--tokadapt <pubkey>',
       'Tokapapt state address',
       parsePubkey,
       Promise.resolve(
