@@ -8,7 +8,7 @@
     "anchor-build": "pnpm select-anchor-version && anchor build",
     "copy-generated": "copyfiles target/types/*.ts packages/sdk/generated",
     "build": "pnpm anchor-build && pnpm copy-generated && tsc --project tsconfig.build.json",
-    "_test": "jest --detectOpenHandles --coverage",
+    "_test": "jest --detectOpenHandles --coverage $FILE",
     "test": "pnpm select-anchor-version && BROWSER= anchor test",
     "cli": "ts-node ./packages/cli/index.ts",
     "lint": "gts lint",

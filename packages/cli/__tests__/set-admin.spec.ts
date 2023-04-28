@@ -7,7 +7,6 @@ import {
   MULTISIG_FACTORIES,
   KeypairSignerHelper,
 } from '@marinade.finance/solana-test-utils';
-import BN from 'bn.js';
 import { KedgereeSDK } from '@marinade.finance/kedgeree-sdk';
 
 jest.setTimeout(300000);
