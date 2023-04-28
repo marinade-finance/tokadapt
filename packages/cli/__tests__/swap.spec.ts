@@ -1,6 +1,6 @@
 import { BN } from '@project-serum/anchor';
 
-import { LAMPORTS_PER_SOL, Keypair } from '@solana/web3.js';
+import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { TokadaptHelper } from '@marinade.finance/tokadapt-sdk/test-helpers/tokadapt';
 
 import { initSDK, shellMatchers } from '../test-helpers';

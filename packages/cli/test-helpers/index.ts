@@ -1,5 +1,3 @@
-import { PublicKey } from '@solana/web3.js';
-
 import { SolanaProvider } from '@saberhq/solana-contrib';
 import { AnchorProvider } from '@project-serum/anchor';
 import { TokadaptSDK } from '@marinade.finance/tokadapt-sdk';
@@ -8,7 +6,6 @@ import { TokadaptHelper } from '@marinade.finance/tokadapt-sdk/test-helpers/toka
 import {
   shellMatchers as untyped,
   createTempFileKeypair,
-  KeypairSignerHelper,
 } from '@marinade.finance/solana-test-utils';
 
 const shellMatchers = untyped as () => void;

@@ -68,7 +68,7 @@ describe('Close tokadapt', () => {
   });
 
   it('it closes using filesystem wallet admin', async () => {
-    const { path, keypair: admin, cleanup } = await createTempFileKeypair();
+    const { path, keypair: admin } = await createTempFileKeypair();
 
     const tokadapt = await TokadaptHelper.create({
       sdk,
