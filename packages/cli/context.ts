@@ -1,7 +1,7 @@
 import { TokadaptSDK } from '@marinade.finance/tokadapt-sdk';
 import { GokiSDK } from '@gokiprotocol/client';
 import { SignerWallet, SolanaProvider } from '@saberhq/solana-contrib';
-import { Connection, Keypair } from '@solana/web3.js';
+import { Cluster, Connection, Keypair, clusterApiUrl } from '@solana/web3.js';
 
 export interface Context {
   tokadapt: TokadaptSDK;
@@ -28,6 +28,11 @@ export const setContext = ({
   walletKP: Keypair;
   simulate: boolean;
 }) => {
+  try {
+    cluster = clusterApiUrl(cluster as Cluster);
+  } catch (e) {
+    // ignore
+  }
   const provider = SolanaProvider.init({
     connection: new Connection(cluster, 'confirmed'),
     wallet: new SignerWallet(walletKP),
