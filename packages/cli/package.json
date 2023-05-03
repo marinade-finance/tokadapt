@@ -12,7 +12,7 @@
   "dependencies": {
     "@gokiprotocol/client": "^0.11.1",
     "@marinade.finance/kedgeree-sdk": "^1.0.3",
-    "@marinade.finance/solana-cli-utils": "0.0.84",
+    "@marinade.finance/solana-cli-utils": "^0.0.85",
     "@marinade.finance/tokadapt-sdk": "workspace:^1.0.0",
     "@saberhq/anchor-contrib": "^1.13.32",
     "@saberhq/token-utils": "^1.13.32",

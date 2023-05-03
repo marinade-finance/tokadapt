@@ -26,7 +26,7 @@ importers:
     specifiers:
       '@gokiprotocol/client': ^0.11.1
       '@marinade.finance/kedgeree-sdk': ^1.0.3
-      '@marinade.finance/solana-cli-utils': 0.0.84
+      '@marinade.finance/solana-cli-utils': ^0.0.85
       '@marinade.finance/solana-test-utils': ^0.0.89
       '@marinade.finance/spl-governance': ^0.3.20
       '@marinade.finance/tokadapt-sdk': workspace:^1.0.0
@@ -52,7 +52,7 @@ importers:
     dependencies:
       '@gokiprotocol/client': 0.11.1_vjc6i6bcoc5td7q6bxodlmso5a
       '@marinade.finance/kedgeree-sdk': 1.0.3_ykycz3ozr7feii7zgb6vxkyrpq
-      '@marinade.finance/solana-cli-utils': 0.0.84_wh7eajaiwnbtg6f2pmtil3qrd4
+      '@marinade.finance/solana-cli-utils': 0.0.85_wh7eajaiwnbtg6f2pmtil3qrd4
       '@marinade.finance/spl-governance': 0.3.25
       '@marinade.finance/tokadapt-sdk': link:../sdk
       '@saberhq/anchor-contrib': 1.14.9_x42msc63vazlnz2njtiuhugkxq
@@ -891,6 +891,38 @@ packages:
       - encoding
       - supports-color
       - utf-8-validate
+    dev: true
+
+  /@marinade.finance/solana-cli-utils/0.0.85_wh7eajaiwnbtg6f2pmtil3qrd4:
+    resolution: {integrity: sha512-JBmjpBKX3xqyob4rvnBgq0a/577XDWcxNnIBY+UrcYQKLF/KcSBGVH87NwwzbsLUDCOXWz3zFTFW+FxyJj0BJg==}
+    peerDependencies:
+      '@gokiprotocol/client': ^0.11.1
+      '@marinade.finance/kedgeree-sdk': ^1.0.3
+      '@saberhq/solana-contrib': ^1.14
+      '@saberhq/token-utils': ^1.14
+      '@solana/web3.js': ^1.54.0
+      bn.js: ^5.2.1
+      jsbi: ^4.3.0
+    dependencies:
+      '@gokiprotocol/client': 0.11.1_vjc6i6bcoc5td7q6bxodlmso5a
+      '@marinade.finance/kedgeree-sdk': 1.0.3_ykycz3ozr7feii7zgb6vxkyrpq
+      '@marinade.finance/spl-governance': 0.3.25
+      '@project-serum/anchor': 0.26.0
+      '@saberhq/anchor-contrib': 1.14.11_bxfktdyreoyns3pik6gokdhkbe
+      '@saberhq/solana-contrib': 1.14.9_abmc5ef5thne65444lwqukuvr4
+      '@saberhq/token-utils': 1.14.9_6hwelezq6nvprujlezukl4fz4m
+      '@solana/web3.js': 1.66.1
+      bn.js: 5.2.1
+      expand-tilde: 2.0.2
+      jsbi: 4.3.0
+      mz: 2.7.0
+    transitivePeerDependencies:
+      - bufferutil
+      - debug
+      - encoding
+      - supports-color
+      - utf-8-validate
+    dev: false
 
   /@marinade.finance/solana-test-utils/0.0.89_4evfzd36uz6zg4dftsuw3pcoai:
     resolution: {integrity: sha512-LNSrVf8pNtHbw425eQfw5u/6kXZvgspypAqRsLU3UaJaY6jWAu/wC9RorIykGG6nBs2OPIrofAKt5ZJ6Cm/ySQ==}
